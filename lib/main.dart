@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme.dark(),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Welcome Page'),
+      home: const MyHomePage(title: 'Flutter Architecture'),
     );
   }
 }
