@@ -26,12 +26,16 @@ class AppService implements AppServiceInterface {
     );
   }
 
+  Map<int, Film> _cachedFilm = {};
+
   @override
   Future<List<Film>?> loadFilms() async {
     var response =
         await client.get<Map<String, dynamic>>("movie/popular", queryParameters: {"language": "it-IT", "page": 1});
     if (response.data != null) {
-      return FilmResponse.fromJson(response.data!).films;
+      var films = FilmResponse.fromJson(response.data!).films;
+      films.forEach((film) => _cachedFilm.putIfAbsent(film.id, () => film));
+      return films;
     }
     return null;
   }
@@ -71,9 +75,16 @@ class AppService implements AppServiceInterface {
           .get<Map<String, dynamic>>("movie/$filmId/similar", queryParameters: {"language": "it-IT", "page": 1});
 
       if (response.data != null) {
-        return RelatedFilmResponse.fromJson(response.data!).films;
+        var films = RelatedFilmResponse.fromJson(response.data!).films;
+        films.forEach((film) => _cachedFilm.putIfAbsent(film.id, () => film));
+        return films;
       }
       return null;
     });
+  }
+
+  @override
+  Future<Film?> loadFilm(int filmId) async {
+    return _cachedFilm[filmId];
   }
 }

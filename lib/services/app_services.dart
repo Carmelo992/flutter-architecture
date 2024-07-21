@@ -12,5 +12,7 @@ abstract class AppServiceInterface {
 
   Future<List<Film>?> loadRelatedFilms(int filmId);
 
-  static AppServiceInterface getImpl() => AppService.instance;
+  Future<Film?> loadFilm(int filmId);
+
+  static AppServiceInterface get instance => AppService.instance;
 }
