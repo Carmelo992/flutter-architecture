@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/generated/app_localizations.dart';
 import 'package:flutter_architecture/screen/film_screen.dart';
 
 void main() {
@@ -11,12 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Architecture',
-      theme: ThemeData(
-        colorScheme: const ColorScheme.dark(),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Architecture'),
+      supportedLocales: AppLocalization.supportedLocales,
+      localizationsDelegates: AppLocalization.localizationsDelegates,
+      onGenerateTitle: (context) => AppLocalization.of(context).name,
+      theme: ThemeData(colorScheme: const ColorScheme.dark(), useMaterial3: true),
+      home: const MyHomePage(),
     );
   }
 }

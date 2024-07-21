@@ -1,0 +1,10 @@
+{
+  "name": "Flutter Architecture",
+  "vote_average": "Vore avg:",
+  "total_votes": "Votes:",
+  "popularity": "Popularity:",
+  "release_date": "Release date:",
+  "genre": "Genre:",
+  "description": "Description:",
+  "similar_films": "Related films (??):"
+}

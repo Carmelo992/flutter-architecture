@@ -2,12 +2,14 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/generated/app_localizations.dart';
+import 'package:flutter_architecture/model/configuration_model.dart';
+import 'package:flutter_architecture/model/film_response_model.dart';
+import 'package:flutter_architecture/model/genre_response_model.dart';
 import 'package:flutter_architecture/screen/details_screen.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -19,7 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(AppLocalization.of(context).name),
       ),
       body: FutureBuilder(
           future: (() async {

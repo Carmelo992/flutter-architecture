@@ -1,0 +1,11 @@
+{
+  "name": "Flutter Architecture",
+  "vote_average": "Media voto:",
+  "total_votes": "Voti ricevuti:",
+  "popularity": "Popolarità:",
+  "release_date": "Uscita:",
+  "genre": "Genere:",
+  "description": "Descrizione:",
+  "similar_films": "Film simili (??):"
+
+}
