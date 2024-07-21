@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/generated/app_localizations.dart';
-import 'package:flutter_architecture/screen/film_screen.dart';
+import 'package:flutter_architecture/views/film_screen.dart';
 
 void main() {
   runApp(const MyApp());

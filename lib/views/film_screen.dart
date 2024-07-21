@@ -6,7 +6,7 @@ import 'package:flutter_architecture/generated/app_localizations.dart';
 import 'package:flutter_architecture/model/configuration_model.dart';
 import 'package:flutter_architecture/model/film_response_model.dart';
 import 'package:flutter_architecture/model/genre_response_model.dart';
-import 'package:flutter_architecture/screen/details_screen.dart';
+import 'package:flutter_architecture/views/details_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -35,21 +35,22 @@ class _MyHomePageState extends State<MyHomePage> {
               client.get<Map<String, dynamic>>("configuration"),
               client.get<Map<String, dynamic>>("genre/movie/list", queryParameters: {"language": "it-IT", "page": 1}),
             ]);
+            print(responses[0].data);
             return {
-              "film": responses[0].data,
-              "configuration": responses[1].data,
-              "genre": responses[2].data,
+              "film": responses[0].data != null ? FilmResponse.fromJson(responses[0].data!) : null,
+              "configuration": responses[1].data != null ? Configuration.fromJson(responses[1].data!) : null,
+              "genre": responses[2].data != null ? GenreResponse.fromJson(responses[2].data!) : null,
             };
           }).call(),
           builder: (context, snapshot) {
             var data = snapshot.data;
             if (data == null) return const Center(child: CircularProgressIndicator());
-            var configurationResponse = data["configuration"];
-            var filmResponse = data["film"];
-            var genreResponse = data["genre"];
+            var configurationResponse = data["configuration"] as Configuration?;
+            var filmResponse = data["film"] as FilmResponse?;
+            var genreResponse = data["genre"] as GenreResponse?;
             if (configurationResponse == null || filmResponse == null || genreResponse == null) return Container();
-            var configuration = configurationResponse["images"] as Map<String, dynamic>;
-            var films = (filmResponse["results"]! as List);
+            var configuration = (configurationResponse).images;
+            var films = filmResponse.films;
             return ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               separatorBuilder: (context, index) => const SizedBox(height: 10),
@@ -64,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
                             builder: (context) =>
-                                DetailsPage(details: film, configuration: configuration, genre: genreResponse)),
+                                DetailsPage(details: film, configuration: configuration, genre: genreResponse.genres)),
                       ),
                       child: Row(
                         children: [
@@ -73,44 +74,46 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: SizedBox(
                               height: double.infinity,
                               child: Hero(
-                                tag: "${film["id"]}_poster",
-                                child: Image.network(
-                                  "${configuration["base_url"]!}${configuration["poster_sizes"].last}${film["poster_path"]}",
-                                  fit: BoxFit.cover,
-                                  loadingBuilder: (ctx, child, imageChunkEvent) {
-                                    if (imageChunkEvent == null) return child;
-                                    return Stack(
-                                      children: [
-                                        Image.network(
-                                          "${configuration["base_url"]!}${configuration["poster_sizes"].first}${film["poster_path"]}",
-                                          fit: BoxFit.cover,
-                                        ),
-                                        Positioned.fill(child: Container(color: Colors.black54)),
-                                        Positioned.fill(
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                                color: Colors.white,
-                                                strokeWidth: 2,
-                                                strokeCap: StrokeCap.round,
-                                                value: imageChunkEvent.expectedTotalBytes == null
-                                                    ? null
-                                                    : imageChunkEvent.cumulativeBytesLoaded /
-                                                        imageChunkEvent.expectedTotalBytes!),
-                                          ),
-                                        ),
-                                        if (imageChunkEvent.expectedTotalBytes != null)
-                                          Positioned.fill(
-                                            child: Center(
-                                              child: Text(
-                                                "${(imageChunkEvent.cumulativeBytesLoaded / imageChunkEvent.expectedTotalBytes! * 100).toStringAsFixed(0)}%",
-                                                style: const TextStyle(color: Colors.white, fontSize: 10),
+                                tag: "${film.id}_poster",
+                                child: film.posterPath == null
+                                    ? Container()
+                                    : Image.network(
+                                        configuration.hdPosterUrl(film.posterPath!),
+                                        fit: BoxFit.cover,
+                                        loadingBuilder: (ctx, child, imageChunkEvent) {
+                                          if (imageChunkEvent == null) return child;
+                                          return Stack(
+                                            children: [
+                                              Image.network(
+                                                configuration.ldPosterUrl(film.posterPath!),
+                                                fit: BoxFit.cover,
                                               ),
-                                            ),
-                                          )
-                                      ],
-                                    );
-                                  },
-                                ),
+                                              Positioned.fill(child: Container(color: Colors.black54)),
+                                              Positioned.fill(
+                                                child: Center(
+                                                  child: CircularProgressIndicator(
+                                                      color: Colors.white,
+                                                      strokeWidth: 2,
+                                                      strokeCap: StrokeCap.round,
+                                                      value: imageChunkEvent.expectedTotalBytes == null
+                                                          ? null
+                                                          : imageChunkEvent.cumulativeBytesLoaded /
+                                                              imageChunkEvent.expectedTotalBytes!),
+                                                ),
+                                              ),
+                                              if (imageChunkEvent.expectedTotalBytes != null)
+                                                Positioned.fill(
+                                                  child: Center(
+                                                    child: Text(
+                                                      "${(imageChunkEvent.cumulativeBytesLoaded / imageChunkEvent.expectedTotalBytes! * 100).toStringAsFixed(0)}%",
+                                                      style: const TextStyle(color: Colors.white, fontSize: 10),
+                                                    ),
+                                                  ),
+                                                )
+                                            ],
+                                          );
+                                        },
+                                      ),
                               ),
                             ),
                           ),
@@ -120,10 +123,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               children: [
                                 Positioned.fill(
                                   child: Hero(
-                                    tag: "${film["id"]}_backdrop",
-                                    child: film["backdrop_path"] != null
+                                    tag: "${film.id}_backdrop",
+                                    child: film.backdropPath != null
                                         ? Image.network(
-                                            "${configuration["base_url"]!}${configuration["backdrop_sizes"].last}${film["backdrop_path"]}",
+                                            configuration.hdBackdropUrl(film.backdropPath!),
                                             fit: BoxFit.cover,
                                           )
                                         : Container(),
@@ -131,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 Positioned.fill(
                                     child: Hero(
-                                  tag: "${film["id"]}_black",
+                                  tag: "${film.id}_black",
                                   child: Container(color: Colors.black54),
                                 )),
                                 SizedBox(
@@ -146,26 +149,28 @@ class _MyHomePageState extends State<MyHomePage> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Hero(
-                                              tag: "${film["id"]}_title",
+                                              tag: "${film.id}_title",
                                               child: Material(
                                                 type: MaterialType.transparency,
                                                 child: Text(
-                                                  film["title"],
+                                                  film.title,
                                                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                                 ),
                                               ),
                                             ),
                                             Text(
-                                              film["overview"],
+                                              film.overview ?? "",
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             const Spacer(),
-                                            Text((genreResponse["genres"] as List)
-                                                    .where((e) => e["id"] == film["genre_ids"].first)
-                                                    .firstOrNull?["name"]
-                                                    .toString() ??
-                                                ""),
+                                            if (film.genreIds.isNotEmpty)
+                                              Text(genreResponse.genres
+                                                      .where((e) => e.id == film.genreIds.first)
+                                                      .firstOrNull
+                                                      ?.name
+                                                      .toString() ??
+                                                  ""),
                                           ],
                                         ),
                                       ),
