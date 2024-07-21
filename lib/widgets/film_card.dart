@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/model/film_model.dart';
 import 'package:flutter_architecture/view_models/film_view_model_interface.dart';
-import 'package:flutter_architecture/views/details_screen.dart';
 import 'package:flutter_architecture/widgets/backdrop_widget.dart';
 
 class FilmCard extends StatelessWidget {
@@ -20,9 +19,10 @@ class FilmCard extends StatelessWidget {
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => DetailsPage(filmId: film.id)),
-          ),
+          onTap: () {
+            print(film.id);
+            Navigator.of(context).pushNamed("details", arguments: [film.id]);
+          },
           child: Row(
             children: [
               Expanded(

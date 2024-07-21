@@ -7,15 +7,16 @@ import 'package:intl/intl.dart';
 
 class DetailsPage extends StatefulWidget {
   final int filmId;
+  final FilmDetailViewModelInterface interface;
 
-  const DetailsPage({required this.filmId, super.key});
+  const DetailsPage(this.interface, {required this.filmId, super.key});
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  FilmDetailViewModelInterface get vm => FilmDetailViewModelInterface.instance;
+  FilmDetailViewModelInterface get vm => widget.interface;
 
   @override
   void initState() {
@@ -156,15 +157,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                       child: Card(
                                         clipBehavior: Clip.antiAlias,
                                         child: InkWell(
-                                          onTap: () {
-                                            Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                              builder: (context) => DetailsPage(filmId: film.id),
-                                            ))
-                                                .then((_) {
-                                              vm.loadFilm(widget.filmId);
-                                            });
-                                          },
+                                          onTap: () => Navigator.of(context)
+                                              .pushNamed("details", arguments: [film.id]).then((_) {
+                                            vm.loadFilm(widget.filmId);
+                                          }),
                                           child: SizedBox(
                                             width: double.infinity,
                                             child: PosterWidget(vm: vm, film: film),

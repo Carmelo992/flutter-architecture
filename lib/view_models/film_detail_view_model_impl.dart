@@ -6,24 +6,19 @@ import 'package:flutter_architecture/services/app_services.dart';
 import 'package:flutter_architecture/view_models/film_detail_view_model_interface.dart';
 
 class FilmDetailViewModel implements FilmDetailViewModelInterface {
-  static FilmDetailViewModel? _instance;
-
-  static FilmDetailViewModel get instance {
-    _instance ??= FilmDetailViewModel._();
-    return _instance!;
-  }
-
-  FilmDetailViewModel._() {
-    AppServiceInterface.instance.loadGenres().then((genres) {
+  FilmDetailViewModel(AppServiceInterface service) {
+    print("**********");
+    service.loadGenres().then((genres) {
       _genres.value = genres;
     });
-    AppServiceInterface.instance.loadImageConfiguration().then((imgConfig) {
+    service.loadImageConfiguration().then((imgConfig) {
       _imgConfig.value = imgConfig;
     });
   }
 
   @override
   void loadFilm(int filmId) {
+    print("********** $filmId");
     AppServiceInterface.instance.loadFilm(filmId).then((film) {
       _film.value = film;
     });
