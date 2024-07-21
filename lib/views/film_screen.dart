@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/generated/app_localizations.dart';
 import 'package:flutter_architecture/model/configuration_model.dart';
-import 'package:flutter_architecture/model/film_response_model.dart';
-import 'package:flutter_architecture/model/genre_response_model.dart';
+import 'package:flutter_architecture/model/film_model.dart';
+import 'package:flutter_architecture/model/genre_model.dart';
+import 'package:flutter_architecture/services/app_services.dart';
 import 'package:flutter_architecture/views/details_screen.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -26,31 +26,24 @@ class _MyHomePageState extends State<MyHomePage> {
       body: FutureBuilder(
           future: (() async {
             await Future.delayed(const Duration(seconds: 2));
-            Dio client = Dio(BaseOptions(
-                baseUrl: "https://api.themoviedb.org/3/",
-                queryParameters: {"api_key": "213c1a1d1f356ed0bf10c9656ab5d5cb"}));
-
             var responses = await Future.wait([
-              client.get<Map<String, dynamic>>("movie/popular", queryParameters: {"language": "it-IT", "page": 1}),
-              client.get<Map<String, dynamic>>("configuration"),
-              client.get<Map<String, dynamic>>("genre/movie/list", queryParameters: {"language": "it-IT", "page": 1}),
+              AppServiceInterface.getImpl().loadFilms(),
+              AppServiceInterface.getImpl().loadImageConfiguration(),
+              AppServiceInterface.getImpl().loadGenres(),
             ]);
-            print(responses[0].data);
             return {
-              "film": responses[0].data != null ? FilmResponse.fromJson(responses[0].data!) : null,
-              "configuration": responses[1].data != null ? Configuration.fromJson(responses[1].data!) : null,
-              "genre": responses[2].data != null ? GenreResponse.fromJson(responses[2].data!) : null,
+              "film": responses[0] as List<Film>?,
+              "configuration": responses[1] as ConfigurationImage?,
+              "genre": responses[2] as List<Genre>?,
             };
           }).call(),
           builder: (context, snapshot) {
             var data = snapshot.data;
             if (data == null) return const Center(child: CircularProgressIndicator());
-            var configurationResponse = data["configuration"] as Configuration?;
-            var filmResponse = data["film"] as FilmResponse?;
-            var genreResponse = data["genre"] as GenreResponse?;
-            if (configurationResponse == null || filmResponse == null || genreResponse == null) return Container();
-            var configuration = (configurationResponse).images;
-            var films = filmResponse.films;
+            var configuration = data["configuration"] as ConfigurationImage?;
+            var films = data["film"] as List<Film>?;
+            var genres = data["genre"] as List<Genre>?;
+            if (configuration == null || films == null || genres == null) return Container();
             return ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               separatorBuilder: (context, index) => const SizedBox(height: 10),
@@ -65,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
                             builder: (context) =>
-                                DetailsPage(details: film, configuration: configuration, genre: genreResponse.genres)),
+                                DetailsPage(details: film, configuration: configuration, genre: genres)),
                       ),
                       child: Row(
                         children: [
@@ -165,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             ),
                                             const Spacer(),
                                             if (film.genreIds.isNotEmpty)
-                                              Text(genreResponse.genres
+                                              Text(genres
                                                       .where((e) => e.id == film.genreIds.first)
                                                       .firstOrNull
                                                       ?.name

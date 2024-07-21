@@ -1,10 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/generated/app_localizations.dart';
 import 'package:flutter_architecture/model/configuration_model.dart';
 import 'package:flutter_architecture/model/film_model.dart';
 import 'package:flutter_architecture/model/genre_model.dart';
-import 'package:flutter_architecture/model/related_film_response_model.dart';
+import 'package:flutter_architecture/services/app_services.dart';
 import 'package:intl/intl.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -189,23 +188,13 @@ class _DetailsPageState extends State<DetailsPage> {
                     style: const TextStyle(fontSize: 24),
                   ),
                   FutureBuilder(
-                    future: (() async {
-                      Dio client = Dio(BaseOptions(
-                          baseUrl: "https://api.themoviedb.org/3/",
-                          queryParameters: {"api_key": "213c1a1d1f356ed0bf10c9656ab5d5cb"}));
-
-                      var response = await client.get<Map<String, dynamic>>("movie/${film.id}/similar",
-                          queryParameters: {"language": "it-IT", "page": 1});
-
-                      return response.data != null ? RelatedFilmResponse.fromJson(response.data!) : null;
-                    }).call(),
+                    future: AppServiceInterface.getImpl().loadRelatedFilms(film.id),
                     builder: (context, snapshot) {
-                      var data = snapshot.data;
-                      if (data == null) {
+                      var relatedFilms = snapshot.data;
+                      if (relatedFilms == null) {
                         return const Center(child: CircularProgressIndicator());
                       }
 
-                      var relatedFilms = data.films;
                       return SizedBox(
                         height: 180,
                         child: ListView.separated(
