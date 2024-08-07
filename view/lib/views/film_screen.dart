@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_architecture/generated/app_localizations.dart';
-import 'package:flutter_architecture/widgets/film_card.dart';
+import 'package:view/generated/app_localizations.dart';
+import 'package:view/types_def.dart';
+import 'package:view/widgets/film_card.dart';
 import 'package:view_model/view_model.dart';
 
 class MyHomePage extends StatefulWidget {
+  final OpenDetails? openDetail;
   final FilmViewModelInterface vm;
 
-  const MyHomePage({required this.vm, super.key});
+  const MyHomePage({required this.vm, required this.openDetail, super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -32,7 +34,11 @@ class _MyHomePageState extends State<MyHomePage> {
             itemCount: films.length,
             itemBuilder: (context, index) {
               var film = films.elementAt(index);
-              return FilmCard(film: film, vm: vm);
+              return FilmCard(
+                film: film,
+                vm: vm,
+                openDetail: widget.openDetail,
+              );
             },
           );
         },

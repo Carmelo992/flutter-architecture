@@ -1,16 +1,17 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_architecture/router/router.dart';
-import 'package:flutter_architecture/widgets/backdrop_widget.dart';
-import 'package:flutter_architecture/widgets/poster_widget.dart';
+import 'package:view/types_def.dart';
+import 'package:view/widgets/backdrop_widget.dart';
+import 'package:view/widgets/poster_widget.dart';
 import 'package:view_model/view_model.dart';
 
 class FilmCard extends StatelessWidget {
+  final OpenDetails? openDetail;
   final FilmUiModel film;
   final FilmViewModelInterface vm;
 
-  const FilmCard({required this.film, required this.vm, super.key});
+  const FilmCard({required this.film, required this.vm, required this.openDetail, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +20,7 @@ class FilmCard extends StatelessWidget {
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: () {
-            DetailsScreenData(film.id, 0).go(context);
-          },
+          onTap: () => openDetail?.call(film.id, 0, context),
           child: Row(
             children: [
               Expanded(

@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_architecture/views/details_screen.dart';
-import 'package:flutter_architecture/views/film_screen.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:model/model.dart';
+import 'package:view/view.dart';
 import 'package:view_model/view_model.dart';
 
 part 'router.g.dart';
@@ -51,7 +50,10 @@ class ArchitectureRouter {
 class SplashScreenData extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return MyHomePage(vm: GetIt.instance.get<FilmViewModelInterface>());
+    return MyHomePage(
+      vm: GetIt.instance.get<FilmViewModelInterface>(),
+      openDetail: (filmId, counter, context) => DetailsScreenData(filmId, counter).go(context),
+    );
   }
 }
 
@@ -75,7 +77,12 @@ class DetailsScreenData extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return DetailsPage(GetIt.instance.get<FilmDetailViewModelInterface>(), filmId: id, counter: counter);
+    return DetailsPage(
+      GetIt.instance.get<FilmDetailViewModelInterface>(),
+      filmId: id,
+      counter: counter,
+      openDetail: (filmId, counter, context) => DetailsScreenData(filmId, counter).push(context),
+    );
   }
 
   @override

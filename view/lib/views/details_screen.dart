@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_architecture/generated/app_localizations.dart';
-import 'package:flutter_architecture/router/router.dart';
-import 'package:flutter_architecture/widgets/backdrop_widget.dart';
-import 'package:flutter_architecture/widgets/poster_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:view/generated/app_localizations.dart';
+import 'package:view/types_def.dart';
+import 'package:view/widgets/backdrop_widget.dart';
+import 'package:view/widgets/poster_widget.dart';
 import 'package:view_model/view_model.dart';
 
 class DetailsPage extends StatefulWidget {
+  final OpenDetails? openDetail;
   final int filmId;
   final int counter;
   final FilmDetailViewModelInterface interface;
 
-  const DetailsPage(this.interface, {required this.filmId, required this.counter, super.key});
+  const DetailsPage(this.interface, {required this.filmId, required this.counter, required this.openDetail, super.key});
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();
@@ -159,9 +160,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       child: Card(
                                         clipBehavior: Clip.antiAlias,
                                         child: InkWell(
-                                          onTap: () {
-                                            DetailsScreenData(film.id, widget.counter + 1).push(context);
-                                          },
+                                          onTap: () => widget.openDetail?.call(film.id, widget.counter + 1, context),
                                           child: SizedBox(
                                             width: double.infinity,
                                             child: PosterWidget(vm: vm, film: film),
