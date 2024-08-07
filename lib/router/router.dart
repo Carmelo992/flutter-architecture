@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_architecture/services/app_services.dart';
+import 'package:flutter_architecture/services/image_services.dart';
 import 'package:flutter_architecture/view_models/film_detail_view_model_impl.dart';
 import 'package:flutter_architecture/view_models/film_detail_view_model_interface.dart';
 import 'package:flutter_architecture/view_models/film_view_model_interface.dart';
@@ -67,7 +68,10 @@ class DetailsScreenData extends GoRouteData {
     if (!GetIt.instance.hasScope("$counter-$id")) {
       GetIt.instance.pushNewScope(
         init: (getIt) {
-          getIt.registerSingleton<FilmDetailViewModelInterface>(FilmDetailViewModel(getIt.get<AppServiceInterface>()));
+          getIt.registerSingleton<FilmDetailViewModelInterface>(FilmDetailViewModel(
+            getIt.get<AppServiceInterface>(),
+            getIt.get<ImageServiceInterface>(),
+          ));
         },
         scopeName: "$counter-$id",
       );

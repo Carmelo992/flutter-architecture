@@ -22,18 +22,21 @@ class _BackdropWidgetState extends State<BackdropWidget> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: widget.vm.imgConfig,
-        builder: (context, imgConfig, child) {
-          if (imgConfig == null) return Container();
-          return widget.film.backdropPath != null
-              ? Opacity(
-                  opacity: widget.opacity,
-                  child: Image.network(
-                    imgConfig.hdBackdropUrl(widget.film.backdropPath!),
-                    fit: BoxFit.cover,
-                  ),
-                )
-              : Container();
-        });
+      valueListenable: widget.vm.imgConfig,
+      builder: (context, imgConfig, child) {
+        if (imgConfig == null) return Container();
+        return widget.film.backdropPath != null
+            ? Opacity(
+                opacity: widget.opacity,
+                child: widget.vm.cachedImage(imgConfig.hdBackdropUrl(widget.film.backdropPath!)) != null
+                    ? Image.memory(widget.vm.cachedImage(imgConfig.hdBackdropUrl(widget.film.backdropPath!))!)
+                    : Image.network(
+                        imgConfig.hdBackdropUrl(widget.film.backdropPath!),
+                        fit: BoxFit.cover,
+                      ),
+              )
+            : Container();
+      },
+    );
   }
 }

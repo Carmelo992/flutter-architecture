@@ -3,13 +3,15 @@ import 'package:flutter_architecture/model/configuration_model.dart';
 import 'package:flutter_architecture/model/film_model.dart';
 import 'package:flutter_architecture/model/genre_model.dart';
 import 'package:flutter_architecture/services/app_services.dart';
+import 'package:flutter_architecture/services/image_services.dart';
 import 'package:flutter_architecture/view_models/base_film_view_model_interface.dart';
 import 'package:flutter_architecture/view_models/film_detail_view_model_interface.dart';
 
 class FilmDetailViewModel extends BaseFilmViewModel implements FilmDetailViewModelInterface {
   final AppServiceInterface appService;
+  final ImageServiceInterface _imageService;
 
-  FilmDetailViewModel(this.appService) {
+  FilmDetailViewModel(this.appService, ImageServiceInterface imageService) : _imageService = imageService {
     appService.loadGenres().then((genres) {
       _genres.value = genres;
     });
@@ -17,6 +19,9 @@ class FilmDetailViewModel extends BaseFilmViewModel implements FilmDetailViewMod
       _imgConfig.value = imgConfig;
     });
   }
+
+  @override
+  ImageServiceInterface get imageService => _imageService;
 
   @override
   void loadFilm(int filmId) {

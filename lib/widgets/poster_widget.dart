@@ -17,45 +17,48 @@ class PosterWidget extends StatelessWidget {
     return ValueListenableBuilder(
         valueListenable: vm.imgConfig,
         builder: (context, imgConfig, child) {
-          if (imgConfig == null) return Container();
-          return film.posterPath == null
-              ? Container()
-              : Image.network(
-                  imgConfig.hdPosterUrl(film.posterPath!),
-                  fit: BoxFit.cover,
-                  loadingBuilder: (ctx, child, imageChunkEvent) {
-                    if (imageChunkEvent == null) return child;
-                    return Stack(
-                      children: [
-                        Image.network(
-                          imgConfig.ldPosterUrl(film.posterPath!),
-                          fit: BoxFit.cover,
+          var posterPath = film.posterPath;
+          if (imgConfig == null || posterPath == null) return Container();
+          var cachedImage = vm.cachedImage(imgConfig.hdPosterUrl(posterPath));
+          if (cachedImage != null) return Image.memory(cachedImage);
+          return Image.network(
+            imgConfig.hdPosterUrl(posterPath),
+            fit: BoxFit.cover,
+            loadingBuilder: (ctx, child, imageChunkEvent) {
+              if (imageChunkEvent == null) return child;
+              return Stack(
+                children: [
+                  Image.network(
+                    imgConfig.ldPosterUrl(posterPath),
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                  Positioned.fill(child: Container(color: Colors.black54)),
+                  Positioned.fill(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                          strokeCap: StrokeCap.round,
+                          value: imageChunkEvent.expectedTotalBytes == null
+                              ? null
+                              : imageChunkEvent.cumulativeBytesLoaded / imageChunkEvent.expectedTotalBytes!),
+                    ),
+                  ),
+                  if (imageChunkEvent.expectedTotalBytes != null)
+                    Positioned.fill(
+                      child: Center(
+                        child: Text(
+                          "${(imageChunkEvent.cumulativeBytesLoaded / imageChunkEvent.expectedTotalBytes! * 100).toStringAsFixed(0)}%",
+                          style: const TextStyle(color: Colors.white, fontSize: 10),
                         ),
-                        Positioned.fill(child: Container(color: Colors.black54)),
-                        Positioned.fill(
-                          child: Center(
-                            child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                                strokeCap: StrokeCap.round,
-                                value: imageChunkEvent.expectedTotalBytes == null
-                                    ? null
-                                    : imageChunkEvent.cumulativeBytesLoaded / imageChunkEvent.expectedTotalBytes!),
-                          ),
-                        ),
-                        if (imageChunkEvent.expectedTotalBytes != null)
-                          Positioned.fill(
-                            child: Center(
-                              child: Text(
-                                "${(imageChunkEvent.cumulativeBytesLoaded / imageChunkEvent.expectedTotalBytes! * 100).toStringAsFixed(0)}%",
-                                style: const TextStyle(color: Colors.white, fontSize: 10),
-                              ),
-                            ),
-                          )
-                      ],
-                    );
-                  },
-                );
+                      ),
+                    )
+                ],
+              );
+            },
+          );
         });
   }
 }

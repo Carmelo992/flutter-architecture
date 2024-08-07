@@ -3,6 +3,8 @@ import 'package:flutter_architecture/generated/app_localizations.dart';
 import 'package:flutter_architecture/router/router.dart';
 import 'package:flutter_architecture/services/app_services.dart';
 import 'package:flutter_architecture/services/app_services_impl.dart';
+import 'package:flutter_architecture/services/image_services.dart';
+import 'package:flutter_architecture/services/image_services_impl.dart';
 import 'package:flutter_architecture/view_models/film_view_model_impl.dart';
 import 'package:flutter_architecture/view_models/film_view_model_interface.dart';
 import 'package:get_it/get_it.dart';
@@ -10,7 +12,11 @@ import 'package:get_it/get_it.dart';
 void main() {
   GetIt getIt = GetIt.instance;
   getIt.registerSingleton<AppServiceInterface>(AppService());
-  getIt.registerSingleton<FilmViewModelInterface>(FilmViewModel(getIt.get<AppServiceInterface>()));
+  getIt.registerSingleton<ImageServiceInterface>(ImageService());
+  getIt.registerSingleton<FilmViewModelInterface>(FilmViewModel(
+    getIt.get<AppServiceInterface>(),
+    getIt.get<ImageServiceInterface>(),
+  ));
 
   runApp(const MyApp());
 }
