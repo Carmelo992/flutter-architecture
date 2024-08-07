@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_architecture/services/app_services.dart';
-import 'package:flutter_architecture/services/image_services.dart';
 import 'package:flutter_architecture/view_models/film_detail_view_model_impl.dart';
 import 'package:flutter_architecture/view_models/film_detail_view_model_interface.dart';
 import 'package:flutter_architecture/view_models/film_view_model_interface.dart';
@@ -10,8 +8,7 @@ import 'package:flutter_architecture/views/details_screen.dart';
 import 'package:flutter_architecture/views/film_screen.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-
-//Script to generate routes: flutter pub run build_runner build --delete-conflicting-outputs
+import 'package:model/model.dart';
 
 part 'router.g.dart';
 

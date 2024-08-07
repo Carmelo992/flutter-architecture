@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_architecture/services/image_services.dart';
+import 'package:model/services/image_services/image_services.dart';
 
 class ImageService implements ImageServiceInterface {
   late Dio client;

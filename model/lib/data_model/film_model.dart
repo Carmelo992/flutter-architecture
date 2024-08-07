@@ -1,7 +1,7 @@
-import 'package:flutter_architecture/model/model_utils.dart';
 import 'package:intl/intl.dart';
+import 'package:model/data_model/model_utils.dart';
 
-class Film {
+class FilmModel {
   bool forAdult;
   String? backdropPath;
   List<int> genreIds;
@@ -32,7 +32,7 @@ class Film {
   static const _voteAverageKey = "vote_average";
   static const _voteCountKey = "vote_count";
 
-  Film.fromJson(Map<String, dynamic> json)
+  FilmModel.fromJson(Map<String, dynamic> json)
       : forAdult = ModelUtils.parse<bool>(json[_forAdultKey], false),
         backdropPath = ModelUtils.parse<String?>(json[_backdropPathKey], null),
         genreIds = List<int>.from(ModelUtils.parse<List>(json[_genreIdsKey], [])),

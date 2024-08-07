@@ -1,14 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_architecture/model/film_model.dart';
 import 'package:flutter_architecture/router/router.dart';
+import 'package:flutter_architecture/ui_model/film_ui_model.dart';
 import 'package:flutter_architecture/view_models/film_view_model_interface.dart';
 import 'package:flutter_architecture/widgets/backdrop_widget.dart';
 import 'package:flutter_architecture/widgets/poster_widget.dart';
 
 class FilmCard extends StatelessWidget {
-  final Film film;
+  final FilmUiModel film;
   final FilmViewModelInterface vm;
 
   const FilmCard({required this.film, required this.vm, super.key});

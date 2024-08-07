@@ -1,13 +1,13 @@
-import 'package:flutter_architecture/model/model_utils.dart';
+import 'package:model/data_model/model_utils.dart';
 
-class Configuration {
+class ConfigurationModel {
   ConfigurationImage images;
   List<String> changeKeys;
 
   static const _imagesKey = "images";
   static const _changeKeysKey = "change_keys";
 
-  Configuration.fromJson(Map<String, dynamic> json)
+  ConfigurationModel.fromJson(Map<String, dynamic> json)
       : images = ConfigurationImage.fromJson(json[_imagesKey] ?? {}),
         changeKeys = List.from(ModelUtils.parse<List>(json[_changeKeysKey], []));
 }

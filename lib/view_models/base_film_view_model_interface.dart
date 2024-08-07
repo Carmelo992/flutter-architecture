@@ -1,12 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_architecture/model/configuration_model.dart';
-import 'package:flutter_architecture/model/genre_model.dart';
-import 'package:flutter_architecture/services/image_services.dart';
+import 'package:flutter_architecture/ui_model/genre_ui_model.dart';
+import 'package:model/model.dart';
 
 abstract class BaseFilmViewModelInterface {
-  ValueListenable<List<Genre>?> get genres;
-
-  ValueListenable<ConfigurationImage?> get imgConfig;
+  ValueListenable<List<GenreUIModel>?> get genres;
 
   Uint8List? cachedImage(String path);
 }

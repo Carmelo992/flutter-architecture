@@ -1,14 +1,17 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_architecture/model/configuration_model.dart';
-import 'package:flutter_architecture/model/film_model.dart';
-import 'package:flutter_architecture/model/film_response_model.dart';
-import 'package:flutter_architecture/model/genre_model.dart';
-import 'package:flutter_architecture/model/genre_response_model.dart';
-import 'package:flutter_architecture/model/related_film_response_model.dart';
-import 'package:flutter_architecture/services/app_services.dart';
+import 'package:model/data_model/configuration_model.dart';
+import 'package:model/data_model/film_model.dart';
+import 'package:model/data_model/film_response_model.dart';
+import 'package:model/data_model/genre_model.dart';
+import 'package:model/data_model/genre_response_model.dart';
+import 'package:model/data_model/related_film_response_model.dart';
+import 'package:model/services/app_services/app_services.dart';
 
 class AppService implements AppServiceInterface {
   late Dio client;
+  final Map<int, FilmModel> _cachedFilm = {};
+  List<GenreModel>? _genres;
+  ConfigurationImage? _configuration;
 
   AppService() {
     client = Dio(
@@ -19,34 +22,28 @@ class AppService implements AppServiceInterface {
     );
   }
 
-  final Map<int, Film> _cachedFilm = {};
-
   @override
-  Future<List<Film>?> loadFilms() async {
+  Future<List<FilmModel>?> loadFilms() async {
     var response =
         await client.get<Map<String, dynamic>>("movie/popular", queryParameters: {"language": "it-IT", "page": 1});
     if (response.data != null) {
-      var films = FilmResponse.fromJson(response.data!).films;
+      var films = FilmResponseModel.fromJson(response.data!).films;
       films.forEach((film) => _cachedFilm.putIfAbsent(film.id, () => film));
       return films;
     }
     return null;
   }
 
-  List<Genre>? _genres;
-
   @override
-  Future<List<Genre>?> loadGenres() async {
+  Future<List<GenreModel>?> loadGenres() async {
     if (_genres != null) return _genres!;
     var response =
         await client.get<Map<String, dynamic>>("genre/movie/list", queryParameters: {"language": "it-IT", "page": 1});
     if (response.data != null) {
-      _genres = GenreResponse.fromJson(response.data!).genres;
+      _genres = GenreResponseModel.fromJson(response.data!).genres;
     }
     return _genres;
   }
-
-  ConfigurationImage? _configuration;
 
   @override
   Future<ConfigurationImage?> loadImageConfiguration() async {
@@ -54,21 +51,21 @@ class AppService implements AppServiceInterface {
 
     var response = await client.get<Map<String, dynamic>>("configuration");
     if (response.data != null) {
-      _configuration = Configuration.fromJson(response.data!).images;
+      _configuration = ConfigurationModel.fromJson(response.data!).images;
     }
     return _configuration;
   }
 
-  final Map<int, Future<List<Film>?>> _cachedRelatedFilms = {};
+  final Map<int, Future<List<FilmModel>?>> _cachedRelatedFilms = {};
 
   @override
-  Future<List<Film>?> loadRelatedFilms(int filmId) {
+  Future<List<FilmModel>?> loadRelatedFilms(int filmId) {
     return _cachedRelatedFilms.putIfAbsent(filmId, () async {
       var response = await client
           .get<Map<String, dynamic>>("movie/$filmId/similar", queryParameters: {"language": "it-IT", "page": 1});
 
       if (response.data != null) {
-        var films = RelatedFilmResponse.fromJson(response.data!).films;
+        var films = RelatedFilmResponseModel.fromJson(response.data!).films;
         films.forEach((film) => _cachedFilm.putIfAbsent(film.id, () => film));
         return films;
       }
@@ -77,7 +74,7 @@ class AppService implements AppServiceInterface {
   }
 
   @override
-  Future<Film?> loadFilm(int filmId) async {
+  Future<FilmModel?> loadFilm(int filmId) async {
     return _cachedFilm[filmId];
   }
 }
