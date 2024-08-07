@@ -8,16 +8,9 @@ import 'package:flutter_architecture/model/related_film_response_model.dart';
 import 'package:flutter_architecture/services/app_services.dart';
 
 class AppService implements AppServiceInterface {
-  static AppService? _instance;
-
-  static AppService get instance {
-    _instance ??= AppService._();
-    return _instance!;
-  }
-
   late Dio client;
 
-  AppService._() {
+  AppService() {
     client = Dio(
       BaseOptions(
         baseUrl: "https://api.themoviedb.org/3/",
@@ -26,7 +19,7 @@ class AppService implements AppServiceInterface {
     );
   }
 
-  Map<int, Film> _cachedFilm = {};
+  final Map<int, Film> _cachedFilm = {};
 
   @override
   Future<List<Film>?> loadFilms() async {

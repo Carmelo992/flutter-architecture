@@ -1,7 +1,6 @@
 import 'package:flutter_architecture/model/configuration_model.dart';
 import 'package:flutter_architecture/model/film_model.dart';
 import 'package:flutter_architecture/model/genre_model.dart';
-import 'package:flutter_architecture/services/app_services_impl.dart';
 
 abstract class AppServiceInterface {
   Future<List<Film>?> loadFilms();
@@ -13,6 +12,4 @@ abstract class AppServiceInterface {
   Future<List<Film>?> loadRelatedFilms(int filmId);
 
   Future<Film?> loadFilm(int filmId);
-
-  static AppServiceInterface get instance => AppService.instance;
 }

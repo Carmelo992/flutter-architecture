@@ -4,14 +4,16 @@ import 'package:flutter_architecture/view_models/film_view_model_interface.dart'
 import 'package:flutter_architecture/widgets/film_card.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  final FilmViewModelInterface vm;
+
+  const MyHomePage({required this.vm, super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  FilmViewModelInterface get vm => FilmViewModelInterface.instance;
+  FilmViewModelInterface get vm => widget.vm;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
             itemCount: films.length,
             itemBuilder: (context, index) {
               var film = films.elementAt(index);
-              return FilmCard(film: film);
+              return FilmCard(film: film, vm: vm);
             },
           );
         },

@@ -5,22 +5,17 @@ import 'package:flutter_architecture/model/genre_model.dart';
 import 'package:flutter_architecture/services/app_services.dart';
 import 'package:flutter_architecture/view_models/film_view_model_interface.dart';
 
-class FilmViewModel implements FilmViewModelInterface {
-  static FilmViewModel? _instance;
+class FilmViewModel extends BaseFilmViewModel implements FilmViewModelInterface {
+  final AppServiceInterface appService;
 
-  static FilmViewModel get instance {
-    _instance ??= FilmViewModel._();
-    return _instance!;
-  }
-
-  FilmViewModel._() {
-    AppServiceInterface.instance.loadFilms().then((films) {
+  FilmViewModel(this.appService) {
+    appService.loadFilms().then((films) {
       _films.value = films;
     });
-    AppServiceInterface.instance.loadGenres().then((genres) {
+    appService.loadGenres().then((genres) {
       _genres.value = genres;
     });
-    AppServiceInterface.instance.loadImageConfiguration().then((imgConfig) {
+    appService.loadImageConfiguration().then((imgConfig) {
       _imgConfig.value = imgConfig;
     });
   }

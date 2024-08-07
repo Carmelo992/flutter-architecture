@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_architecture/services/app_services.dart';
 import 'package:flutter_architecture/view_models/film_detail_view_model_impl.dart';
 import 'package:flutter_architecture/view_models/film_detail_view_model_interface.dart';
+import 'package:flutter_architecture/view_models/film_view_model_interface.dart';
 import 'package:flutter_architecture/views/details_screen.dart';
 import 'package:flutter_architecture/views/film_screen.dart';
 import 'package:get_it/get_it.dart';
@@ -54,7 +55,7 @@ class ArchitectureRouter {
 class SplashScreenData extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const MyHomePage();
+    return MyHomePage(vm: GetIt.instance.get<FilmViewModelInterface>());
   }
 }
 
