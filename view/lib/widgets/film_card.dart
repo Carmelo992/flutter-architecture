@@ -20,7 +20,7 @@ class FilmCard extends StatelessWidget {
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: () => openDetail?.call(film.id, 0, context),
+          onTap: () => openDetail?.call(film.id, context),
           child: Row(
             children: [
               Expanded(

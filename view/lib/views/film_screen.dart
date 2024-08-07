@@ -4,17 +4,17 @@ import 'package:view/types_def.dart';
 import 'package:view/widgets/film_card.dart';
 import 'package:view_model/view_model.dart';
 
-class MyHomePage extends StatefulWidget {
+class FilmPage extends StatefulWidget {
   final OpenDetails? openDetail;
   final FilmViewModelInterface vm;
 
-  const MyHomePage({required this.vm, required this.openDetail, super.key});
+  const FilmPage({required this.vm, required this.openDetail, super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<FilmPage> createState() => _FilmPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _FilmPageState extends State<FilmPage> {
   FilmViewModelInterface get vm => widget.vm;
 
   @override

@@ -35,10 +35,6 @@ class ArchitectureRouter {
   late GoRouter router = GoRouter(
     routes: $appRoutes,
     initialLocation: initialLocation ?? SplashScreenData().location,
-    errorBuilder: (context, state) {
-      debugPrint("state: $state");
-      return Container();
-    },
     debugLogDiagnostics: true,
     redirect: (context, state) {
       return null;
@@ -46,13 +42,23 @@ class ArchitectureRouter {
   );
 }
 
-@TypedGoRoute<SplashScreenData>(path: '/home', routes: [TypedGoRoute<DetailsScreenData>(path: 'details/:counter/:id')])
+@TypedGoRoute<SplashScreenData>(path: '/')
 class SplashScreenData extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return MyHomePage(
+    return SplashPage(goHome: (context) => HomeScreenData().go(context));
+  }
+}
+
+@TypedGoRoute<HomeScreenData>(path: '/home', routes: [
+  TypedGoRoute<DetailsScreenData>(path: 'details/:id'),
+])
+class HomeScreenData extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return FilmPage(
       vm: GetIt.instance.get<FilmViewModelInterface>(),
-      openDetail: (filmId, counter, context) => DetailsScreenData(filmId, counter).go(context),
+      openDetail: (filmId, context) => DetailsScreenData(filmId, 0).go(context),
     );
   }
 }
@@ -80,8 +86,7 @@ class DetailsScreenData extends GoRouteData {
     return DetailsPage(
       GetIt.instance.get<FilmDetailViewModelInterface>(),
       filmId: id,
-      counter: counter,
-      openDetail: (filmId, counter, context) => DetailsScreenData(filmId, counter).push(context),
+      openDetail: (filmId, context) => DetailsScreenData(filmId, counter + 1).push(context),
     );
   }
 

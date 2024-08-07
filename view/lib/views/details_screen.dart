@@ -9,10 +9,9 @@ import 'package:view_model/view_model.dart';
 class DetailsPage extends StatefulWidget {
   final OpenDetails? openDetail;
   final int filmId;
-  final int counter;
   final FilmDetailViewModelInterface interface;
 
-  const DetailsPage(this.interface, {required this.filmId, required this.counter, required this.openDetail, super.key});
+  const DetailsPage(this.interface, {required this.filmId, required this.openDetail, super.key});
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();
@@ -160,7 +159,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       child: Card(
                                         clipBehavior: Clip.antiAlias,
                                         child: InkWell(
-                                          onTap: () => widget.openDetail?.call(film.id, widget.counter + 1, context),
+                                          onTap: () => widget.openDetail?.call(film.id, context),
                                           child: SizedBox(
                                             width: double.infinity,
                                             child: PosterWidget(vm: vm, film: film),
