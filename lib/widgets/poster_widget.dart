@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_architecture/ui_model/film_ui_model.dart';
-import 'package:flutter_architecture/view_models/base_film_view_model_interface.dart';
+import 'package:view_model/view_model.dart';
 
 class PosterWidget extends StatefulWidget {
   const PosterWidget({

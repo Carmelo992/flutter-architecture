@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_architecture/ui_model/genre_ui_model.dart';
 import 'package:model/model.dart';
+import 'package:view_model/ui_model/genre_ui_model.dart';
 
 abstract class BaseFilmViewModelInterface {
   ValueListenable<List<GenreUIModel>?> get genres;

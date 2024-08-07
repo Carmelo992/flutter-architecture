@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_architecture/view_models/film_detail_view_model_impl.dart';
-import 'package:flutter_architecture/view_models/film_detail_view_model_interface.dart';
-import 'package:flutter_architecture/view_models/film_view_model_interface.dart';
 import 'package:flutter_architecture/views/details_screen.dart';
 import 'package:flutter_architecture/views/film_screen.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:model/model.dart';
+import 'package:view_model/view_model.dart';
 
 part 'router.g.dart';
 

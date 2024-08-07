@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/generated/app_localizations.dart';
 import 'package:flutter_architecture/router/router.dart';
-import 'package:flutter_architecture/view_models/film_detail_view_model_interface.dart';
 import 'package:flutter_architecture/widgets/backdrop_widget.dart';
 import 'package:flutter_architecture/widgets/poster_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:view_model/view_model.dart';
 
 class DetailsPage extends StatefulWidget {
   final int filmId;

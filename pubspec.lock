@@ -178,7 +178,7 @@ packages:
     source: hosted
     version: "2.3.6"
   dio:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: dio
       sha256: e17f6b3097b8c51b72c74c9f071a605c47bcc8893839bd66732457a5ebe73714
@@ -577,6 +577,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  view_model:
+    dependency: "direct main"
+    description:
+      path: view_model
+      relative: true
+    source: path
+    version: "0.0.1"
   vm_service:
     dependency: transitive
     description:
