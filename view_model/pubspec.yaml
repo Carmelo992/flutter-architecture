@@ -1,6 +1,7 @@
 name: view_model
 description: "A new Flutter project."
 version: 0.0.1
+publish_to: none
 
 environment:
   sdk: ^3.5.0
