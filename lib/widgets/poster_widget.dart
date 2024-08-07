@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_architecture/model/film_model.dart';
 import 'package:flutter_architecture/view_models/base_film_view_model_interface.dart';
 
-class PosterWidget extends StatelessWidget {
+class PosterWidget extends StatefulWidget {
   const PosterWidget({
     super.key,
     required this.vm,
@@ -13,13 +13,22 @@ class PosterWidget extends StatelessWidget {
   final Film film;
 
   @override
+  State<PosterWidget> createState() => _PosterWidgetState();
+}
+
+class _PosterWidgetState extends State<PosterWidget> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ValueListenableBuilder(
-        valueListenable: vm.imgConfig,
+        valueListenable: widget.vm.imgConfig,
         builder: (context, imgConfig, child) {
-          var posterPath = film.posterPath;
+          var posterPath = widget.film.posterPath;
           if (imgConfig == null || posterPath == null) return Container();
-          var cachedImage = vm.cachedImage(imgConfig.hdPosterUrl(posterPath));
+          var cachedImage = widget.vm.cachedImage(imgConfig.hdPosterUrl(posterPath));
           if (cachedImage != null) return Image.memory(cachedImage);
           return Image.network(
             imgConfig.hdPosterUrl(posterPath),
