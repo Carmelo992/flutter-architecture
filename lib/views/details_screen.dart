@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/generated/app_localizations.dart';
+import 'package:flutter_architecture/router/router.dart';
 import 'package:flutter_architecture/view_models/film_detail_view_model_interface.dart';
 import 'package:flutter_architecture/widgets/backdrop_widget.dart';
 import 'package:flutter_architecture/widgets/poster_widget.dart';
@@ -7,9 +8,10 @@ import 'package:intl/intl.dart';
 
 class DetailsPage extends StatefulWidget {
   final int filmId;
+  final int counter;
   final FilmDetailViewModelInterface interface;
 
-  const DetailsPage(this.interface, {required this.filmId, super.key});
+  const DetailsPage(this.interface, {required this.filmId, required this.counter, super.key});
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();
@@ -157,10 +159,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                       child: Card(
                                         clipBehavior: Clip.antiAlias,
                                         child: InkWell(
-                                          onTap: () => Navigator.of(context)
-                                              .pushNamed("details", arguments: [film.id]).then((_) {
-                                            vm.loadFilm(widget.filmId);
-                                          }),
+                                          onTap: () {
+                                            DetailsScreenData(film.id, widget.counter + 1).push(context);
+                                          },
                                           child: SizedBox(
                                             width: double.infinity,
                                             child: PosterWidget(vm: vm, film: film),

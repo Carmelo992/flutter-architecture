@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/model/film_model.dart';
+import 'package:flutter_architecture/router/router.dart';
 import 'package:flutter_architecture/view_models/film_view_model_interface.dart';
 import 'package:flutter_architecture/widgets/backdrop_widget.dart';
 
@@ -20,8 +21,7 @@ class FilmCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: () {
-            print(film.id);
-            Navigator.of(context).pushNamed("details", arguments: [film.id]);
+            DetailsScreenData(film.id, 0).go(context);
           },
           child: Row(
             children: [
@@ -45,6 +45,8 @@ class FilmCard extends StatelessWidget {
                                       Image.network(
                                         imgConfig.ldPosterUrl(film.posterPath!),
                                         fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: double.infinity,
                                       ),
                                       Positioned.fill(child: Container(color: Colors.black54)),
                                       Positioned.fill(
