@@ -24,18 +24,18 @@ class _BackdropWidgetState extends State<BackdropWidget> {
     return ValueListenableBuilder(
       valueListenable: widget.vm.imgConfig,
       builder: (context, imgConfig, child) {
-        if (imgConfig == null) return Container();
-        return widget.film.backdropPath != null
-            ? Opacity(
-                opacity: widget.opacity,
-                child: widget.vm.cachedImage(imgConfig.hdBackdropUrl(widget.film.backdropPath!)) != null
-                    ? Image.memory(widget.vm.cachedImage(imgConfig.hdBackdropUrl(widget.film.backdropPath!))!)
-                    : Image.network(
-                        imgConfig.hdBackdropUrl(widget.film.backdropPath!),
-                        fit: BoxFit.cover,
-                      ),
-              )
-            : Container();
+        var backdropPath = widget.film.backdropPath;
+        if (imgConfig == null || backdropPath == null) return Container();
+        var cachedImage = widget.vm.cachedImage(imgConfig.hdBackdropUrl(backdropPath));
+        return Opacity(
+          opacity: widget.opacity,
+          child: cachedImage != null
+              ? Image.memory(cachedImage)
+              : Image.network(
+                  imgConfig.hdBackdropUrl(backdropPath),
+                  fit: BoxFit.cover,
+                ),
+        );
       },
     );
   }
