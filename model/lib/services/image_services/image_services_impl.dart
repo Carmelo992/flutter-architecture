@@ -20,11 +20,15 @@ class ImageService implements ImageServiceInterface {
   }
 
   @override
-  void downloadImage(String path) async {
-    var response = await client.get(path, options: Options(responseType: ResponseType.bytes));
-    var data = response.data;
-    if (data is Uint8List) {
-      _cachedImage.putIfAbsent(path, () => data);
+  Future<void> downloadImage(String path) async {
+    try {
+      var response = await client.get(path, options: Options(responseType: ResponseType.bytes));
+      var data = response.data;
+      if (data is Uint8List) {
+        _cachedImage.putIfAbsent(path, () => data);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 }
