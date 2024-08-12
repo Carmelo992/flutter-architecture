@@ -11,6 +11,7 @@ class FilmDetailViewModel extends BaseFilmViewModel implements FilmDetailViewMod
 
   FilmDetailViewModel(this.appService, ImageServiceInterface imageService) : _imageService = imageService {
     appService.loadGenres().then((genres) {
+      print("***** genres loaded");
       _genres.value = genres?.map((model) => GenreUIModel.fromModel(model)).toList();
     });
   }

@@ -10,6 +10,7 @@ class ImageService implements ImageServiceInterface {
   }
 
   final Map<String, Uint8List> _cachedImage = {};
+  final List<String> _downloadedImages = [];
 
   @override
   Uint8List? cachedImage(String path) {
@@ -21,6 +22,8 @@ class ImageService implements ImageServiceInterface {
 
   @override
   Future<void> downloadImage(String path) async {
+    if (_downloadedImages.contains(path)) return;
+    if (_cachedImage.containsKey(path)) return;
     try {
       var response = await client.get(path, options: Options(responseType: ResponseType.bytes));
       var data = response.data;
