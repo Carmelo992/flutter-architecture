@@ -4,7 +4,7 @@ import 'package:model/model.dart';
 void main() {
   group('Test ImageService', () {
     ImageServiceInterface imageService = ImageService();
-    String correctUrl = "http://image.tmdb.org/t/p/w92/xJ0YiCfKxouv8DEFoZiq1G1e4x8.jpg";
+    String correctUrl = "http://image.tmdb.org/t/p/w92/stKGOm8UyhuLPR9sZLjs5AkmncA.jpg";
     test('Check empty cache on startup', () {
       var cachedImage = imageService.cachedImage(correctUrl);
       expect(cachedImage, isNull);

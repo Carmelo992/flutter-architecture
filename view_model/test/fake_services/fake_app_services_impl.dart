@@ -31,7 +31,6 @@ class FakeAppService implements AppServiceInterface {
 
   @override
   Future<List<GenreModel>?> loadGenres() async {
-    print("**** $_genres");
     if (_genres != null) return _genres!;
     await Future.delayed(const Duration(seconds: 2));
     var genreResponseModel = GenreResponseModel.fromJson(genreResponse);

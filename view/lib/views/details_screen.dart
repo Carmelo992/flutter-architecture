@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:view/generated/app_localizations.dart';
 import 'package:view/types_def.dart';
-import 'package:view/widgets/backdrop_widget.dart';
+import 'package:view/widgets/details_film_header.dart';
 import 'package:view/widgets/poster_widget.dart';
 import 'package:view_model/view_model.dart';
 
@@ -47,25 +47,7 @@ class _DetailsPageState extends State<DetailsPage> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 220,
-                  width: double.infinity,
-                  child: Stack(
-                    children: [
-                      BackdropWidget(vm: vm, film: film),
-                      Positioned.fill(child: Container(color: Colors.black54)),
-                      Positioned(
-                        bottom: 20,
-                        left: 20,
-                        right: 20,
-                        child: Text(
-                          film.title,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                DetailsHeader(vm: vm, film: film),
                 Expanded(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(20),
@@ -75,7 +57,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(child: PosterWidget(vm: vm, film: film)),
+                            Expanded(child: PosterWidget(vm: vm, film: film, height: null)),
                             const SizedBox(width: 20),
                             Expanded(
                                 child: Column(

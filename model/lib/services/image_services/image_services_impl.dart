@@ -24,6 +24,7 @@ class ImageService implements ImageServiceInterface {
   Future<void> downloadImage(String path) async {
     if (_downloadedImages.contains(path)) return;
     if (_cachedImage.containsKey(path)) return;
+    _downloadedImages.add(path);
     try {
       var response = await client.get(path, options: Options(responseType: ResponseType.bytes));
       var data = response.data;
