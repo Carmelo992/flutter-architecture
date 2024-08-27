@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:model/model.dart';
 import 'package:view/view.dart';
 import 'package:view_model/view_model.dart';
 
@@ -19,14 +17,43 @@ class ArchitectureRouter {
     return _instance!;
   }
 
-  static ArchitectureRouter initialize({String? initialLocation, Function(String route)? routeListener}) {
-    _instance ??= ArchitectureRouter._(initialLocation, routeListener);
+  static ArchitectureRouter initialize(
+      {required Function<T extends Object>(String name) pushScope,
+      required Function(String name) popScope,
+      required Function<T extends Object>() getVm,
+      String? initialLocation,
+      Function(String route)? routeListener}) {
+    _instance ??= ArchitectureRouter._(
+      initialLocation: initialLocation,
+      routeListener: routeListener,
+      getVm: getVm,
+      pushScope: pushScope,
+      popScope: popScope,
+    );
     return _instance!;
   }
 
+  final Function<T extends Object>() _getVm;
+  final Function<T extends Object>(String name) _pushScope;
+  final Function(String name) _popScope;
+
+  T getVm<T extends Object>() => _getVm<T>();
+
+  void pushScope<T extends Object>(String name) => _pushScope<T>(name);
+
+  void popScope(String name) => _popScope(name);
+
   String? initialLocation;
 
-  ArchitectureRouter._([this.initialLocation, Function(String route)? routeListener]) {
+  ArchitectureRouter._(
+      {required Function<T extends Object>(String name) pushScope,
+      required Function(String name) popScope,
+      required Function<T extends Object>() getVm,
+      this.initialLocation,
+      Function(String route)? routeListener})
+      : _pushScope = pushScope,
+        _popScope = popScope,
+        _getVm = getVm {
     router.routeInformationProvider.addListener(() {
       routeListener?.call(router.routeInformationProvider.value.uri.path);
     });
@@ -57,7 +84,7 @@ class HomeScreenData extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return FilmPage(
-      vm: GetIt.instance.get<FilmViewModelInterface>(),
+      vm: ArchitectureRouter.instance.getVm<FilmViewModelInterface>(),
       openDetail: (filmId, context) => DetailsScreenData(filmId, 0).go(context),
     );
   }
@@ -68,23 +95,13 @@ class DetailsScreenData extends GoRouteData {
   final int counter;
 
   DetailsScreenData(this.id, this.counter) {
-    if (!GetIt.instance.hasScope("$counter-$id")) {
-      GetIt.instance.pushNewScope(
-        init: (getIt) {
-          getIt.registerSingleton<FilmDetailViewModelInterface>(FilmDetailViewModel(
-            getIt.get<AppServiceInterface>(),
-            getIt.get<ImageServiceInterface>(),
-          ));
-        },
-        scopeName: "$counter-$id",
-      );
-    }
+    ArchitectureRouter.instance.pushScope<FilmDetailViewModelInterface>("$counter-$id");
   }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return DetailsPage(
-      GetIt.instance.get<FilmDetailViewModelInterface>(),
+      ArchitectureRouter.instance.getVm<FilmDetailViewModelInterface>(),
       filmId: id,
       openDetail: (filmId, context) => DetailsScreenData(filmId, counter + 1).push(context),
     );
@@ -92,9 +109,7 @@ class DetailsScreenData extends GoRouteData {
 
   @override
   FutureOr<bool> onExit(BuildContext context, GoRouterState state) {
-    if (GetIt.instance.hasScope("$counter-$id")) {
-      GetIt.instance.dropScope("$counter-$id");
-    }
+    ArchitectureRouter.instance.popScope("$counter-$id");
     return super.onExit(context, state);
   }
 }
