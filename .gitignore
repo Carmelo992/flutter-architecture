@@ -45,3 +45,4 @@ app.*.map.json
 /lib/generated/
 /ios/build
 /lib/gen_l10n
+/lib/router/router.g.dart

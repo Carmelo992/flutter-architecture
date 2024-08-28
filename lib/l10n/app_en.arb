@@ -6,5 +6,6 @@
   "release_date": "Release date:",
   "genre": "Genre:",
   "description": "Description:",
-  "similar_films": "Related films (??):"
+  "similar_films": "Related films (??):",
+  "date_format": "MM/dd/yyyy"
 }
