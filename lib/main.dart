@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         getVm: <T extends Object>() => GetIt.instance.get<T>(),
         pushScope: <T extends Object>(name) {
           if (!GetIt.instance.hasScope(name)) {
-            if (T is FilmDetailViewModelInterface) {
+            if (T == FilmDetailViewModelInterface) {
               GetIt.instance.pushNewScope(
                 init: (getIt) {
                   getIt.registerSingleton<FilmDetailViewModelInterface>(FilmDetailViewModel(
