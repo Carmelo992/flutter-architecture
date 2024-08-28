@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_architecture/generated/app_localizations.dart';
 import 'package:flutter_architecture/router/router.dart';
-import 'package:flutter_architecture/services/app_services.dart';
-import 'package:flutter_architecture/services/app_services_impl.dart';
-import 'package:flutter_architecture/services/image_services.dart';
-import 'package:flutter_architecture/services/image_services_impl.dart';
-import 'package:flutter_architecture/view_models/film_view_model_impl.dart';
-import 'package:flutter_architecture/view_models/film_view_model_interface.dart';
 import 'package:get_it/get_it.dart';
+import 'package:model/model.dart';
+import 'package:view/view.dart';
+import 'package:view_model/view_model.dart';
 
 void main() {
   GetIt getIt = GetIt.instance;

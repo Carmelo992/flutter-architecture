@@ -1,17 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_architecture/services/app_services.dart';
-import 'package:flutter_architecture/services/image_services.dart';
-import 'package:flutter_architecture/view_models/film_detail_view_model_impl.dart';
-import 'package:flutter_architecture/view_models/film_detail_view_model_interface.dart';
-import 'package:flutter_architecture/view_models/film_view_model_interface.dart';
-import 'package:flutter_architecture/views/details_screen.dart';
-import 'package:flutter_architecture/views/film_screen.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-
-//Script to generate routes: flutter pub run build_runner build --delete-conflicting-outputs
+import 'package:model/model.dart';
+import 'package:view/view.dart';
+import 'package:view_model/view_model.dart';
 
 part 'router.g.dart';
 
@@ -41,10 +35,6 @@ class ArchitectureRouter {
   late GoRouter router = GoRouter(
     routes: $appRoutes,
     initialLocation: initialLocation ?? SplashScreenData().location,
-    errorBuilder: (context, state) {
-      debugPrint("state: $state");
-      return Container();
-    },
     debugLogDiagnostics: true,
     redirect: (context, state) {
       return null;
@@ -52,11 +42,24 @@ class ArchitectureRouter {
   );
 }
 
-@TypedGoRoute<SplashScreenData>(path: '/home', routes: [TypedGoRoute<DetailsScreenData>(path: 'details/:counter/:id')])
+@TypedGoRoute<SplashScreenData>(path: '/')
 class SplashScreenData extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return MyHomePage(vm: GetIt.instance.get<FilmViewModelInterface>());
+    return SplashPage(goHome: (context) => HomeScreenData().go(context));
+  }
+}
+
+@TypedGoRoute<HomeScreenData>(path: '/home', routes: [
+  TypedGoRoute<DetailsScreenData>(path: 'details/:id'),
+])
+class HomeScreenData extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return FilmPage(
+      vm: GetIt.instance.get<FilmViewModelInterface>(),
+      openDetail: (filmId, context) => DetailsScreenData(filmId, 0).go(context),
+    );
   }
 }
 
@@ -80,7 +83,11 @@ class DetailsScreenData extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return DetailsPage(GetIt.instance.get<FilmDetailViewModelInterface>(), filmId: id, counter: counter);
+    return DetailsPage(
+      GetIt.instance.get<FilmDetailViewModelInterface>(),
+      filmId: id,
+      openDetail: (filmId, context) => DetailsScreenData(filmId, counter + 1).push(context),
+    );
   }
 
   @override
