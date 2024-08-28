@@ -6,10 +6,12 @@ class PosterWidget extends StatefulWidget {
     super.key,
     required this.vm,
     required this.film,
+    this.height = double.infinity,
   });
 
   final BaseFilmViewModelInterface vm;
   final FilmUiModel film;
+  final double? height;
 
   @override
   State<PosterWidget> createState() => _PosterWidgetState();
@@ -26,7 +28,14 @@ class _PosterWidgetState extends State<PosterWidget> with AutomaticKeepAliveClie
     var posterPathLd = widget.film.posterPathLd;
     if (posterPathHd == null) return Container();
     var cachedImage = widget.vm.cachedImage(posterPathHd);
-    if (cachedImage != null) return Image.memory(cachedImage);
+    if (cachedImage != null) {
+      return Image.memory(
+        cachedImage,
+        width: double.infinity,
+        height: widget.height,
+        fit: BoxFit.cover,
+      );
+    }
     return Image.network(
       posterPathHd,
       fit: BoxFit.cover,

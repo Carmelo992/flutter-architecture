@@ -16,7 +16,7 @@ class FilmCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 180,
+      height: MediaQuery.textScalerOf(context).scale(180),
       child: Card(
         clipBehavior: Clip.antiAlias,
         child: InkWell(
@@ -51,11 +51,13 @@ class FilmCard extends StatelessWidget {
                               children: [
                                 Text(
                                   film.title,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                                 ),
                                 Text(
                                   film.overview ?? "",
-                                  maxLines: 2,
+                                  maxLines: 2 + MediaQuery.textScalerOf(context).scale(0.5).floor(),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 const Spacer(),
