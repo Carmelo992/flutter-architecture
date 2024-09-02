@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:model/services/image_services/image_services.dart';
+import 'package:model/model.dart';
 
-import '../fake_models/fake_image.dart';
+import '../fake_model/image_result_model.dart';
+import '../fake_raw_data//fake_image.dart';
 
 class FakeImageService implements ImageServiceInterface {
   FakeImageService();
@@ -9,15 +10,16 @@ class FakeImageService implements ImageServiceInterface {
   final Map<String, Uint8List> _cachedImage = {};
 
   @override
-  Uint8List? cachedImage(String path) {
+  ImageResponseInterface cachedImage(String path) {
     if (!_cachedImage.containsKey(path)) {
       downloadImage(path);
     }
-    return _cachedImage[path];
+    return ImageResponse.success(_cachedImage[path]!);
   }
 
   @override
-  Future<void> downloadImage(String path) async {
+  Future<ImageResponseInterface> downloadImage(String path) async {
     _cachedImage.putIfAbsent(path, () => fakeImage);
+    return ImageResponse.success(fakeImage);
   }
 }

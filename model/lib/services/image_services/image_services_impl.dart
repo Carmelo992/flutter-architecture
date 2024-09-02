@@ -16,12 +16,17 @@ class ImageService implements ImageServiceInterface {
 
   @override
   ImageResponseInterface cachedImage(String path) {
+    bool toDownload = false;
     if (!_cachedImage.containsKey(path)) {
       downloadImage(path);
+      toDownload = true;
     }
     var cache = _cachedImage[path];
     if (cache != null) {
       return ImageResponse.success(cache);
+    }
+    if (toDownload) {
+      return ImageResponse.error(ImageErrorEnum.imageDownloading);
     }
     return ImageResponse.error(ImageErrorEnum.imageNotFound);
   }

@@ -45,6 +45,7 @@ void main() {
 
     test('check ViewModel loaded', () async {
       await Future.delayed(const Duration(seconds: 3));
+      print(filmViewModel.films.value);
       expect(filmViewModel.films.value, isNotEmpty);
       expect(filmViewModel.genres.value, isNotEmpty);
     });
@@ -53,7 +54,8 @@ void main() {
       var configuration = await fakeAppService.loadImageConfiguration();
       var modelFilms = await fakeAppService.loadFilms();
       expect(configuration, isNotNull);
-      var fakeFilm = modelFilms?.map((e) => FilmUiModel.fromModel(e, configuration!)).toList();
+      var fakeFilm =
+          modelFilms.responseValue?.map((e) => FilmUiModel.fromModel(e, configuration.responseValue!)).toList();
       expect(fakeFilm, isNotNull);
       var vmFilms = filmViewModel.films.value;
       expect(vmFilms, isNotNull);

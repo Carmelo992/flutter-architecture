@@ -9,6 +9,7 @@ abstract class ImageResponseInterface extends ResultInterface<Uint8List, ImageEr
 }
 
 enum ImageErrorEnum {
+  imageDownloading,
   imageNotFound,
   alreadyDownloaded,
   serverError;

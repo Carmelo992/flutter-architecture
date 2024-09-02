@@ -12,10 +12,11 @@ class FilmViewModel extends BaseFilmViewModel implements FilmViewModelInterface 
   FilmViewModel(this.appService, ImageServiceInterface imageService) : _imageService = imageService {
     appService.loadImageConfiguration().then((imgConfig) {
       appService.loadFilms().then((films) {
-        _films.value = films?.map((model) => FilmUiModel.fromModel(model, imgConfig)).toList();
+        _films.value =
+            films.responseValue?.map((model) => FilmUiModel.fromModel(model, imgConfig.responseValue)).toList();
       });
       appService.loadGenres().then((genres) {
-        _genres.value = genres?.map((model) => GenreUIModel.fromModel(model)).toList();
+        _genres.value = genres.responseValue?.map((model) => GenreUIModel.fromModel(model)).toList();
       });
     });
   }

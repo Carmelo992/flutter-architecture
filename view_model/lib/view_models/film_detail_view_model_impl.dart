@@ -11,7 +11,7 @@ class FilmDetailViewModel extends BaseFilmViewModel implements FilmDetailViewMod
 
   FilmDetailViewModel(this.appService, ImageServiceInterface imageService) : _imageService = imageService {
     appService.loadGenres().then((genres) {
-      _genres.value = genres?.map((model) => GenreUIModel.fromModel(model)).toList();
+      _genres.value = genres.responseValue?.map((model) => GenreUIModel.fromModel(model)).toList();
     });
   }
 
@@ -21,11 +21,14 @@ class FilmDetailViewModel extends BaseFilmViewModel implements FilmDetailViewMod
   @override
   void loadFilm(int filmId) {
     appService.loadImageConfiguration().then((imgConfig) {
+      var configurationImage = imgConfig.responseValue;
       appService.loadFilm(filmId).then((film) {
-        _film.value = film != null ? FilmUiModel.fromModel(film, imgConfig) : null;
+        _film.value =
+            film.responseValue != null ? FilmUiModel.fromModel(film.responseValue!, configurationImage) : null;
       });
       appService.loadRelatedFilms(filmId).then((films) {
-        _relatedFilms.value = films?.map((model) => FilmUiModel.fromModel(model, imgConfig)).toList();
+        _relatedFilms.value =
+            films.responseValue?.map((model) => FilmUiModel.fromModel(model, configurationImage)).toList();
       });
     });
   }
