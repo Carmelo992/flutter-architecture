@@ -1,17 +1,17 @@
-import 'package:model/result_model/interface/configuration_result_model_interface.dart';
-import 'package:model/result_model/interface/film_details_result_model_interface.dart';
-import 'package:model/result_model/interface/genre_result_model_interface.dart';
-import 'package:model/result_model/interface/list_film_result_model_interface.dart';
-import 'package:model/result_model/interface/related_film_result_model_interface.dart';
+import 'package:model/result_model/configuration/configuration_result_model.dart';
+import 'package:model/result_model/film_details/film_details_result_model.dart';
+import 'package:model/result_model/genre/genre_result_model.dart';
+import 'package:model/result_model/list_film/list_film_result_model.dart';
+import 'package:model/result_model/related_film/related_film_result_model.dart';
 
-abstract class AppServiceInterface {
-  Future<ListFilmResponseInterface> loadFilms();
+abstract class AppService {
+  Future<ListFilmResult> loadFilms();
 
-  Future<GenreResponseInterface> loadGenres();
+  Future<GenreResult> loadGenres();
 
-  Future<ConfigurationResponseInterface> loadImageConfiguration();
+  Future<ConfigurationResult> loadImageConfiguration();
 
-  Future<RelatedFilmResponseInterface> loadRelatedFilms(int filmId);
+  Future<RelatedFilmResult> loadRelatedFilms(int filmId);
 
-  Future<FilmDetailsResponseInterface> loadFilm(int filmId);
+  Future<FilmDetailsResult> loadFilm(int filmId);
 }

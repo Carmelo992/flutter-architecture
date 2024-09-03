@@ -20,7 +20,7 @@ void main() {
 
   group("Widget testing", () {
     FilmUiModel film = MockedFilmUiModel();
-    FilmViewModelInterface vm = MockedFilmViewModel();
+    FilmViewModel vm = MockedFilmViewModel();
 
     testGoldens('Poster widget', (tester) async {
       await loadAppFonts();
@@ -103,7 +103,7 @@ void main() {
   });
 
   group("Screen testing", () {
-    FilmViewModelInterface vm = MockedFilmViewModel();
+    FilmViewModel vm = MockedFilmViewModel();
     testGoldens("Films page", (tester) async {
       await loadAppFonts();
       var widget = MaterialApp(

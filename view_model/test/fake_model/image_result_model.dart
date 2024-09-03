@@ -1,6 +1,6 @@
-import 'package:model/result_model/interface/image_result_model_interface.dart';
+import 'package:model/model.dart';
 
-class ImageResponse extends ImageResponseInterface {
+class ImageResponse extends ImageResult {
   ImageResponse.error(super.errorValue) : super.error();
 
   ImageResponse.success(super.responseValue) : super.success();

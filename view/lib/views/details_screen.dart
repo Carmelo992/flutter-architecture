@@ -9,7 +9,7 @@ import 'package:view_model/view_model.dart';
 class DetailsPage extends StatefulWidget {
   final OpenDetails? openDetail;
   final int filmId;
-  final FilmDetailViewModelInterface interface;
+  final FilmDetailViewModel interface;
 
   const DetailsPage(this.interface, {required this.filmId, required this.openDetail, super.key});
 
@@ -18,7 +18,7 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  FilmDetailViewModelInterface get vm => widget.interface;
+  FilmDetailViewModel get vm => widget.interface;
 
   @override
   void initState() {

@@ -1,0 +1,16 @@
+import 'dart:typed_data';
+
+import 'package:model/result_model/result_model.dart';
+
+abstract class ImageResult extends ModelResult<Uint8List, ImageErrorEnum> {
+  ImageResult.error(super.errorValue) : super.error();
+
+  ImageResult.success(super.responseValue) : super.success();
+}
+
+enum ImageErrorEnum {
+  imageDownloading,
+  imageNotFound,
+  alreadyDownloaded,
+  serverError;
+}

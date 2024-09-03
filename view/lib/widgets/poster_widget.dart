@@ -9,7 +9,7 @@ class PosterWidget extends StatefulWidget {
     this.height = double.infinity,
   });
 
-  final BaseFilmViewModelInterface vm;
+  final BaseFilmViewModel vm;
   final FilmUiModel film;
   final double? height;
 

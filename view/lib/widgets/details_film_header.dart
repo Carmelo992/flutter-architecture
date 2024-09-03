@@ -9,7 +9,7 @@ class DetailsHeader extends StatelessWidget {
     required this.film,
   });
 
-  final BaseFilmViewModelInterface vm;
+  final BaseFilmViewModel vm;
   final FilmUiModel film;
 
   @override

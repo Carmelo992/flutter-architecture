@@ -8,7 +8,7 @@ class BackdropWidget extends StatefulWidget {
     required this.film,
   });
 
-  final BaseFilmViewModelInterface vm;
+  final BaseFilmViewModel vm;
   final FilmUiModel film;
 
   @override

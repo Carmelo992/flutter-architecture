@@ -2,21 +2,21 @@ import 'package:flutter/foundation.dart';
 import 'package:model/model.dart';
 import 'package:view_model/ui_model/film_ui_model.dart';
 import 'package:view_model/ui_model/genre_ui_model.dart';
-import 'package:view_model/view_models/base_film_view_model_interface.dart';
-import 'package:view_model/view_models/film_detail_view_model_interface.dart';
+import 'package:view_model/view_models/base_film_view_model.dart';
+import 'package:view_model/view_models/film_detail_view_model.dart';
 
-class FilmDetailViewModel extends BaseFilmViewModel implements FilmDetailViewModelInterface {
-  final AppServiceInterface appService;
-  final ImageServiceInterface _imageService;
+class FilmDetailViewModelImpl extends BaseImageFilmViewModel implements FilmDetailViewModel {
+  final AppService appService;
+  final ImageService _imageService;
 
-  FilmDetailViewModel(this.appService, ImageServiceInterface imageService) : _imageService = imageService {
+  FilmDetailViewModelImpl(this.appService, ImageService imageService) : _imageService = imageService {
     appService.loadGenres().then((genres) {
       _genres.value = genres.responseValue?.map((model) => GenreUIModel.fromModel(model)).toList();
     });
   }
 
   @override
-  ImageServiceInterface get imageService => _imageService;
+  ImageService get imageService => _imageService;
 
   @override
   void loadFilm(int filmId) {

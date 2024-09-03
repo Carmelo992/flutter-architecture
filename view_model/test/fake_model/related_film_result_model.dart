@@ -1,6 +1,6 @@
-import 'package:model/result_model/interface/related_film_result_model_interface.dart';
+import 'package:model/model.dart';
 
-class RelatedFilmResponse extends RelatedFilmResponseInterface {
+class RelatedFilmResponse extends RelatedFilmResult {
   RelatedFilmResponse.error(super.errorValue) : super.error();
 
   RelatedFilmResponse.success(super.responseValue) : super.success();
