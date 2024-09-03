@@ -1,15 +1,17 @@
-import 'package:model/data_model/configuration_model.dart';
-import 'package:model/data_model/film_model.dart';
 import 'package:model/data_model/film_response_model.dart';
-import 'package:model/data_model/genre_model.dart';
 import 'package:model/data_model/genre_response_model.dart';
 import 'package:model/data_model/related_film_response_model.dart';
-import 'package:model/services/app_services/app_services.dart';
+import 'package:model/model.dart';
 
-import '../fake_models/fake_configuration_response.dart';
-import '../fake_models/fake_film_response.dart';
-import '../fake_models/fake_genre_response.dart';
-import '../fake_models/fake_related_film_response.dart';
+import '../fake_model/configuration_result_model.dart';
+import '../fake_model/film_details_result_model.dart';
+import '../fake_model/genre_result_model.dart';
+import '../fake_model/list_film_result_model.dart';
+import '../fake_model/related_film_result_model.dart';
+import '../fake_raw_data/fake_configuration_response.dart';
+import '../fake_raw_data/fake_film_response.dart';
+import '../fake_raw_data/fake_genre_response.dart';
+import '../fake_raw_data/fake_related_film_response.dart';
 
 class FakeAppService implements AppServiceInterface {
   final Map<int, FilmModel> _cachedFilm = {};
@@ -19,51 +21,51 @@ class FakeAppService implements AppServiceInterface {
   FakeAppService();
 
   @override
-  Future<List<FilmModel>?> loadFilms() {
+  Future<ListFilmResponseInterface> loadFilms() {
     return Future.delayed(const Duration(seconds: 1), () {
       var filmResponseModel = FilmResponseModel.fromJson(filmResponse);
 
       var films = filmResponseModel.films;
       films.forEach((film) => _cachedFilm.putIfAbsent(film.id, () => film));
-      return films;
+      return ListFilmResponse.success(films);
     });
   }
 
   @override
-  Future<List<GenreModel>?> loadGenres() async {
-    if (_genres != null) return _genres!;
+  Future<GenreResponseInterface> loadGenres() async {
+    if (_genres != null) return GenreResponse.success(_genres!);
     await Future.delayed(const Duration(seconds: 2));
     var genreResponseModel = GenreResponseModel.fromJson(genreResponse);
     _genres = genreResponseModel.genres;
-    return _genres;
+    return GenreResponse.success(_genres!);
   }
 
   @override
-  Future<ConfigurationImage?> loadImageConfiguration() async {
-    if (_configuration != null) return _configuration!;
+  Future<ConfigurationResponseInterface> loadImageConfiguration() async {
+    if (_configuration != null) return ConfigurationResponse.success(_configuration!);
     await Future.delayed(const Duration(seconds: 1));
     var configImageResponse = ConfigurationModel.fromJson(configurationResponse);
     _configuration = configImageResponse.images;
-    return _configuration;
+    return ConfigurationResponse.success(_configuration!);
   }
 
-  final Map<int, Future<List<FilmModel>?>> _cachedRelatedFilms = {};
+  final Map<int, Future<RelatedFilmResponseInterface>> _cachedRelatedFilms = {};
 
   @override
-  Future<List<FilmModel>?> loadRelatedFilms(int filmId) async {
+  Future<RelatedFilmResponseInterface> loadRelatedFilms(int filmId) async {
     await Future.delayed(const Duration(seconds: 1));
     return _cachedRelatedFilms.putIfAbsent(filmId, () async {
       var relatedFilmResponseModel = RelatedFilmResponseModel.fromJson(relatedFilmResponse);
 
       var films = relatedFilmResponseModel.films;
       films.forEach((film) => _cachedFilm.putIfAbsent(film.id, () => film));
-      return films;
+      return RelatedFilmResponse.success(films);
     });
   }
 
   @override
-  Future<FilmModel?> loadFilm(int filmId) async {
+  Future<FilmDetailsResponseInterface> loadFilm(int filmId) async {
     await loadFilms();
-    return _cachedFilm[filmId];
+    return FilmDetailsResponse.success(_cachedFilm[filmId]!);
   }
 }

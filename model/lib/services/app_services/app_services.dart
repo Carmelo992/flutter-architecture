@@ -1,15 +1,17 @@
-import 'package:model/data_model/configuration_model.dart';
-import 'package:model/data_model/film_model.dart';
-import 'package:model/data_model/genre_model.dart';
+import 'package:model/result_model/interface/configuration_result_model_interface.dart';
+import 'package:model/result_model/interface/film_details_result_model_interface.dart';
+import 'package:model/result_model/interface/genre_result_model_interface.dart';
+import 'package:model/result_model/interface/list_film_result_model_interface.dart';
+import 'package:model/result_model/interface/related_film_result_model_interface.dart';
 
 abstract class AppServiceInterface {
-  Future<List<FilmModel>?> loadFilms();
+  Future<ListFilmResponseInterface> loadFilms();
 
-  Future<List<GenreModel>?> loadGenres();
+  Future<GenreResponseInterface> loadGenres();
 
-  Future<ConfigurationImage?> loadImageConfiguration();
+  Future<ConfigurationResponseInterface> loadImageConfiguration();
 
-  Future<List<FilmModel>?> loadRelatedFilms(int filmId);
+  Future<RelatedFilmResponseInterface> loadRelatedFilms(int filmId);
 
-  Future<FilmModel?> loadFilm(int filmId);
+  Future<FilmDetailsResponseInterface> loadFilm(int filmId);
 }

@@ -12,5 +12,5 @@ abstract class BaseFilmViewModel implements BaseFilmViewModelInterface {
   ImageServiceInterface get imageService;
 
   @override
-  Uint8List? cachedImage(String path) => imageService.cachedImage(path);
+  Uint8List? cachedImage(String path) => imageService.cachedImage(path).responseValue;
 }
