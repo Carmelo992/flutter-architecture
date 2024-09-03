@@ -1,9 +1,9 @@
-abstract class ModelResult<SUCCESS, ERROR> {
+abstract class ResultModel<SUCCESS, ERROR> {
   SUCCESS? responseValue;
 
   ERROR? errorValue;
 
-  ModelResult.success(SUCCESS this.responseValue);
+  ResultModel.success(SUCCESS this.responseValue);
 
-  ModelResult.error(ERROR this.errorValue);
+  ResultModel.error(ERROR this.errorValue);
 }
