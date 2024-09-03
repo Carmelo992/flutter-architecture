@@ -6,7 +6,7 @@ import 'package:view_model/view_model.dart';
 
 class FilmPage extends StatefulWidget {
   final OpenDetails? openDetail;
-  final FilmViewModelInterface vm;
+  final FilmViewModel vm;
 
   const FilmPage({required this.vm, required this.openDetail, super.key});
 
@@ -15,7 +15,7 @@ class FilmPage extends StatefulWidget {
 }
 
 class _FilmPageState extends State<FilmPage> {
-  FilmViewModelInterface get vm => widget.vm;
+  FilmViewModel get vm => widget.vm;
 
   @override
   Widget build(BuildContext context) {

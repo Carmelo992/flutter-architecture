@@ -12,7 +12,7 @@ import 'mocked_view_models/mocked_film_view_model.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GetIt getIt = GetIt.instance;
-  getIt.registerSingleton<FilmViewModelInterface>(MockedFilmViewModel());
+  getIt.registerSingleton<FilmViewModel>(MockedFilmViewModel());
 
   testWidgets("Testing app flow", (tester) async {
     await tester.pumpWidget(MaterialApp.router(
@@ -24,10 +24,10 @@ void main() {
         pushScope: <T extends Object>(name) {
           if (!GetIt.instance.hasScope(name)) {
             switch (T) {
-              case const (FilmDetailViewModelInterface):
+              case const (FilmDetailViewModel):
                 GetIt.instance.pushNewScope(
                   init: (getIt) {
-                    getIt.registerSingleton<FilmDetailViewModelInterface>(MockedFilmDetailsViewModel());
+                    getIt.registerSingleton<FilmDetailViewModel>(MockedFilmDetailsViewModel());
                   },
                   scopeName: name,
                 );

@@ -1,6 +1,6 @@
-import 'package:model/result_model/interface/configuration_result_model_interface.dart';
+import 'package:model/model.dart';
 
-class ConfigurationResponse extends ConfigurationResponseInterface {
+class ConfigurationResponse extends ConfigurationResult {
   ConfigurationResponse.error(super.errorValue) : super.error();
 
   ConfigurationResponse.success(super.responseValue) : super.success();

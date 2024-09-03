@@ -13,7 +13,7 @@ import '../fake_raw_data/fake_film_response.dart';
 import '../fake_raw_data/fake_genre_response.dart';
 import '../fake_raw_data/fake_related_film_response.dart';
 
-class FakeAppService implements AppServiceInterface {
+class FakeAppService implements AppService {
   final Map<int, FilmModel> _cachedFilm = {};
   List<GenreModel>? _genres;
   ConfigurationImage? _configuration;
@@ -21,7 +21,7 @@ class FakeAppService implements AppServiceInterface {
   FakeAppService();
 
   @override
-  Future<ListFilmResponseInterface> loadFilms() {
+  Future<ListFilmResult> loadFilms() {
     return Future.delayed(const Duration(seconds: 1), () {
       var filmResponseModel = FilmResponseModel.fromJson(filmResponse);
 
@@ -32,7 +32,7 @@ class FakeAppService implements AppServiceInterface {
   }
 
   @override
-  Future<GenreResponseInterface> loadGenres() async {
+  Future<GenreResult> loadGenres() async {
     if (_genres != null) return GenreResponse.success(_genres!);
     await Future.delayed(const Duration(seconds: 2));
     var genreResponseModel = GenreResponseModel.fromJson(genreResponse);
@@ -41,7 +41,7 @@ class FakeAppService implements AppServiceInterface {
   }
 
   @override
-  Future<ConfigurationResponseInterface> loadImageConfiguration() async {
+  Future<ConfigurationResult> loadImageConfiguration() async {
     if (_configuration != null) return ConfigurationResponse.success(_configuration!);
     await Future.delayed(const Duration(seconds: 1));
     var configImageResponse = ConfigurationModel.fromJson(configurationResponse);
@@ -49,10 +49,10 @@ class FakeAppService implements AppServiceInterface {
     return ConfigurationResponse.success(_configuration!);
   }
 
-  final Map<int, Future<RelatedFilmResponseInterface>> _cachedRelatedFilms = {};
+  final Map<int, Future<RelatedFilmResult>> _cachedRelatedFilms = {};
 
   @override
-  Future<RelatedFilmResponseInterface> loadRelatedFilms(int filmId) async {
+  Future<RelatedFilmResult> loadRelatedFilms(int filmId) async {
     await Future.delayed(const Duration(seconds: 1));
     return _cachedRelatedFilms.putIfAbsent(filmId, () async {
       var relatedFilmResponseModel = RelatedFilmResponseModel.fromJson(relatedFilmResponse);
@@ -64,7 +64,7 @@ class FakeAppService implements AppServiceInterface {
   }
 
   @override
-  Future<FilmDetailsResponseInterface> loadFilm(int filmId) async {
+  Future<FilmDetailsResult> loadFilm(int filmId) async {
     await loadFilms();
     return FilmDetailsResponse.success(_cachedFilm[filmId]!);
   }

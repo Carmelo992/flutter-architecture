@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:model/result_model/implementation/image_result_model.dart';
-import 'package:model/result_model/interface/image_result_model_interface.dart';
+import 'package:model/result_model/image/image_result_model.dart';
+import 'package:model/result_model/image/image_result_model_impl.dart';
 import 'package:model/services/image_services/image_services.dart';
 
-class ImageService implements ImageServiceInterface {
+class ImageServiceImpl implements ImageService {
   late Dio client;
 
-  ImageService() {
+  ImageServiceImpl() {
     client = Dio();
   }
 
@@ -15,7 +15,7 @@ class ImageService implements ImageServiceInterface {
   final List<String> _downloadedImages = [];
 
   @override
-  ImageResponseInterface cachedImage(String path) {
+  ImageResult cachedImage(String path) {
     bool toDownload = false;
     if (!_cachedImage.containsKey(path)) {
       downloadImage(path);
@@ -23,29 +23,29 @@ class ImageService implements ImageServiceInterface {
     }
     var cache = _cachedImage[path];
     if (cache != null) {
-      return ImageResponse.success(cache);
+      return ImageResultImpl.success(cache);
     }
     if (toDownload) {
-      return ImageResponse.error(ImageErrorEnum.imageDownloading);
+      return ImageResultImpl.error(ImageErrorEnum.imageDownloading);
     }
-    return ImageResponse.error(ImageErrorEnum.imageNotFound);
+    return ImageResultImpl.error(ImageErrorEnum.imageNotFound);
   }
 
   @override
-  Future<ImageResponseInterface> downloadImage(String path) async {
-    if (_downloadedImages.contains(path)) return ImageResponse.error(ImageErrorEnum.alreadyDownloaded);
-    if (_cachedImage.containsKey(path)) return ImageResponse.error(ImageErrorEnum.alreadyDownloaded);
+  Future<ImageResult> downloadImage(String path) async {
+    if (_downloadedImages.contains(path)) return ImageResultImpl.error(ImageErrorEnum.alreadyDownloaded);
+    if (_cachedImage.containsKey(path)) return ImageResultImpl.error(ImageErrorEnum.alreadyDownloaded);
     _downloadedImages.add(path);
     try {
       var response = await client.get(path, options: Options(responseType: ResponseType.bytes));
       var data = response.data;
       if (data is Uint8List) {
         _cachedImage.putIfAbsent(path, () => data);
-        return ImageResponse.success(data);
+        return ImageResultImpl.success(data);
       }
     } catch (e) {
       debugPrint(e.toString());
     }
-    return ImageResponse.error(ImageErrorEnum.serverError);
+    return ImageResultImpl.error(ImageErrorEnum.serverError);
   }
 }

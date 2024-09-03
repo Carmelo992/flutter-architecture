@@ -9,7 +9,7 @@ import 'package:view_model/view_model.dart';
 class FilmCard extends StatelessWidget {
   final OpenDetails? openDetail;
   final FilmUiModel film;
-  final FilmViewModelInterface vm;
+  final FilmViewModel vm;
 
   const FilmCard({required this.film, required this.vm, required this.openDetail, super.key});
 

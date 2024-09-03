@@ -7,7 +7,7 @@ import '../fake_data/fake_poster_image.dart';
 import '../mocked_ui_models/mocked_film_ui_model.dart';
 import '../mocked_ui_models/mocked_genre_ui_model.dart';
 
-class MockedFilmViewModel implements FilmViewModelInterface {
+class MockedFilmViewModel implements FilmViewModel {
   @override
   Uint8List? cachedImage(String path) {
     return posterImage;

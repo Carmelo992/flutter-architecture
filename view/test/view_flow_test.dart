@@ -14,7 +14,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group("Testing film flow", () {
     testWidgets("FilmPage", (tester) async {
-      FilmViewModelInterface filmVm = MockedFilmViewModel();
+      FilmViewModel filmVm = MockedFilmViewModel();
       await tester.pumpWidget(MaterialApp(
         supportedLocales: AppLocalization.supportedLocales,
         localizationsDelegates: AppLocalization.localizationsDelegates,
@@ -28,7 +28,7 @@ void main() {
     });
 
     testWidgets("FilmDetailsPage", (tester) async {
-      FilmDetailViewModelInterface filmDetailsVm = MockedFilmDetailsViewModel();
+      FilmDetailViewModel filmDetailsVm = MockedFilmDetailsViewModel();
       await tester.pumpWidget(MaterialApp(
         supportedLocales: AppLocalization.supportedLocales,
         localizationsDelegates: AppLocalization.localizationsDelegates,

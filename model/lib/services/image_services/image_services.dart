@@ -1,7 +1,7 @@
-import 'package:model/result_model/interface/image_result_model_interface.dart';
+import 'package:model/result_model/image/image_result_model.dart';
 
-abstract class ImageServiceInterface {
-  ImageResponseInterface cachedImage(String path);
+abstract class ImageService {
+  ImageResult cachedImage(String path);
 
   Future<void> downloadImage(String path);
 }

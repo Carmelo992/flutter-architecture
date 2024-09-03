@@ -84,7 +84,7 @@ class HomeScreenData extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return FilmPage(
-      vm: ArchitectureRouter.instance.getVm<FilmViewModelInterface>(),
+      vm: ArchitectureRouter.instance.getVm<FilmViewModel>(),
       openDetail: (filmId, context) => DetailsScreenData(filmId, 0).go(context),
     );
   }
@@ -95,13 +95,13 @@ class DetailsScreenData extends GoRouteData {
   final int counter;
 
   DetailsScreenData(this.id, this.counter) {
-    ArchitectureRouter.instance.pushScope<FilmDetailViewModelInterface>("$counter-$id");
+    ArchitectureRouter.instance.pushScope<FilmDetailViewModel>("$counter-$id");
   }
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return DetailsPage(
-      ArchitectureRouter.instance.getVm<FilmDetailViewModelInterface>(),
+      ArchitectureRouter.instance.getVm<FilmDetailViewModel>(),
       filmId: id,
       openDetail: (filmId, context) => DetailsScreenData(filmId, counter + 1).push(context),
     );

@@ -7,11 +7,11 @@ import 'package:view_model/view_model.dart';
 
 void main() {
   GetIt getIt = GetIt.instance;
-  getIt.registerSingleton<AppServiceInterface>(AppService());
-  getIt.registerSingleton<ImageServiceInterface>(ImageService());
-  getIt.registerSingleton<FilmViewModelInterface>(FilmViewModel(
-    getIt.get<AppServiceInterface>(),
-    getIt.get<ImageServiceInterface>(),
+  getIt.registerSingleton<AppService>(AppServiceImpl());
+  getIt.registerSingleton<ImageService>(ImageServiceImpl());
+  getIt.registerSingleton<FilmViewModel>(FilmViewModelImpl(
+    getIt.get<AppService>(),
+    getIt.get<ImageService>(),
   ));
 
   runApp(const MyApp());
@@ -27,12 +27,12 @@ class MyApp extends StatelessWidget {
         getVm: <T extends Object>() => GetIt.instance.get<T>(),
         pushScope: <T extends Object>(name) {
           if (!GetIt.instance.hasScope(name)) {
-            if (T == FilmDetailViewModelInterface) {
+            if (T == FilmDetailViewModel) {
               GetIt.instance.pushNewScope(
                 init: (getIt) {
-                  getIt.registerSingleton<FilmDetailViewModelInterface>(FilmDetailViewModel(
-                    getIt.get<AppServiceInterface>(),
-                    getIt.get<ImageServiceInterface>(),
+                  getIt.registerSingleton<FilmDetailViewModel>(FilmDetailViewModelImpl(
+                    getIt.get<AppService>(),
+                    getIt.get<ImageService>(),
                   ));
                 },
                 scopeName: name,

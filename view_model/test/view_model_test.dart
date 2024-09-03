@@ -7,14 +7,14 @@ import 'fake_services/fake_image_services_impl.dart';
 
 void main() {
   group("Test FilmDetailViewModel", () {
-    AppServiceInterface fakeAppService = FakeAppService();
-    ImageServiceInterface fakeImageService = FakeImageService();
-    FilmDetailViewModelInterface filmDetailViewModel = FilmDetailViewModel(fakeAppService, fakeImageService);
+    AppService fakeAppService = FakeAppService();
+    ImageService fakeImageService = FakeImageService();
+    FilmDetailViewModel filmDetailViewModel = FilmDetailViewModelImpl(fakeAppService, fakeImageService);
 
     test('check empty ViewModel on startup', () {
-      AppServiceInterface fakeAppService = FakeAppService();
-      ImageServiceInterface fakeImageService = FakeImageService();
-      FilmDetailViewModelInterface filmDetailViewModel = FilmDetailViewModel(fakeAppService, fakeImageService);
+      AppService fakeAppService = FakeAppService();
+      ImageService fakeImageService = FakeImageService();
+      FilmDetailViewModel filmDetailViewModel = FilmDetailViewModelImpl(fakeAppService, fakeImageService);
       expect(filmDetailViewModel.film.value, isNull);
       expect(filmDetailViewModel.relatedFilms.value, isNull);
       expect(filmDetailViewModel.genres.value, isNull);
@@ -31,14 +31,14 @@ void main() {
   });
 
   group("Test FilmViewModel", () {
-    AppServiceInterface fakeAppService = FakeAppService();
-    ImageServiceInterface fakeImageService = FakeImageService();
-    FilmViewModelInterface filmViewModel = FilmViewModel(fakeAppService, fakeImageService);
+    AppService fakeAppService = FakeAppService();
+    ImageService fakeImageService = FakeImageService();
+    FilmViewModel filmViewModel = FilmViewModelImpl(fakeAppService, fakeImageService);
 
     test('check empty ViewModel on startup', () {
-      AppServiceInterface fakeAppService = FakeAppService();
-      ImageServiceInterface fakeImageService = FakeImageService();
-      FilmViewModelInterface filmViewModel = FilmViewModel(fakeAppService, fakeImageService);
+      AppService fakeAppService = FakeAppService();
+      ImageService fakeImageService = FakeImageService();
+      FilmViewModel filmViewModel = FilmViewModelImpl(fakeAppService, fakeImageService);
       expect(filmViewModel.films.value, isNull);
       expect(filmViewModel.genres.value, isNull);
     });

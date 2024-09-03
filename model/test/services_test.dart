@@ -3,7 +3,7 @@ import 'package:model/model.dart';
 
 void main() {
   group('Test ImageService', () {
-    ImageServiceInterface imageService = ImageService();
+    ImageService imageService = ImageServiceImpl();
     String correctUrl = "http://image.tmdb.org/t/p/w92/stKGOm8UyhuLPR9sZLjs5AkmncA.jpg";
     test('Check empty cache on startup', () {
       var cachedImage = imageService.cachedImage(correctUrl).responseValue;
@@ -37,7 +37,7 @@ void main() {
   });
 
   group("Test AppService", () {
-    AppServiceInterface appService = AppService();
+    AppService appService = AppServiceImpl();
     List<FilmModel>? films = [];
     List<GenreModel>? genres = [];
     ConfigurationImage? imageConfig;

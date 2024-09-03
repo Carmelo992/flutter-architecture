@@ -2,14 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:model/model.dart';
 import 'package:view_model/ui_model/film_ui_model.dart';
 import 'package:view_model/ui_model/genre_ui_model.dart';
-import 'package:view_model/view_models/base_film_view_model_interface.dart';
-import 'package:view_model/view_models/film_view_model_interface.dart';
+import 'package:view_model/view_models/base_film_view_model.dart';
+import 'package:view_model/view_models/film_view_model.dart';
 
-class FilmViewModel extends BaseFilmViewModel implements FilmViewModelInterface {
-  final AppServiceInterface appService;
-  final ImageServiceInterface _imageService;
+class FilmViewModelImpl extends BaseImageFilmViewModel implements FilmViewModel {
+  final AppService appService;
+  final ImageService _imageService;
 
-  FilmViewModel(this.appService, ImageServiceInterface imageService) : _imageService = imageService {
+  FilmViewModelImpl(this.appService, ImageService imageService) : _imageService = imageService {
     appService.loadImageConfiguration().then((imgConfig) {
       appService.loadFilms().then((films) {
         _films.value =
@@ -22,7 +22,7 @@ class FilmViewModel extends BaseFilmViewModel implements FilmViewModelInterface 
   }
 
   @override
-  ImageServiceInterface get imageService => _imageService;
+  ImageService get imageService => _imageService;
 
   @override
   ValueListenable<List<FilmUiModel>?> get films => _films;
