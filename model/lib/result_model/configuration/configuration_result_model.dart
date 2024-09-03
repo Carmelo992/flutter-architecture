@@ -1,7 +1,7 @@
 import 'package:model/data_model/configuration_model.dart';
 import 'package:model/result_model/result_model.dart';
 
-abstract class ConfigurationResult extends ModelResult<ConfigurationImage, ConfigurationErrorEnum> {
+abstract class ConfigurationResult extends ResultModel<ConfigurationImage, ConfigurationErrorEnum> {
   ConfigurationResult.error(super.errorValue) : super.error();
 
   ConfigurationResult.success(super.responseValue) : super.success();
