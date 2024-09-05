@@ -3,20 +3,20 @@
 ## Intro
 
 Questo progetto mostra una possibile applicazione dei principi S.O.L.I.D. e della CleanArchitecture
-per rendere l'app più modulare, flessibile e testabile.
+per creare applicazioni più modulari, flessibili e testabili.
 
 ## Struttura del progetto
 
-Il pattern architetturale utilizzato è il ModelViewViewModel (MVVM)
+Il pattern architetturale utilizzato è il ModelViewViewModel (MVVM).
 
 All'interno della cartella lib è presente solo la parte relativa al **routing** e alla **Dependency
-Injection**. Tutte le altre funzionaità sono delegate ai sottomoduli **view**, **view_mode** e
+Injection**. Tutte le altre funzionalità sono delegate ai sottomoduli **view**, **view_mode** e 
 **model**.
 
 ### View
 
-Contiene tutte le classi responsabili della parte grafica, come **Widget**,
-**stringhe localizzate**, **font** e **colori**
+Contiene tutte le classi responsabili della parte grafica, come **widget**, 
+**stringhe localizzate**, **font** e **colori**.
 
 Ogni pagina dell'applicazione richiede nel suo costruttore un'istanza del ViewModel, la dipendenza
 non è sulla classe concreta ma su una sua interfaccia.
@@ -24,11 +24,11 @@ La view, tramite il suo viewModel, richiede le azioni da far eseguire, come ad e
 di dati da server.
 La comunicazione inversa, da ViewModel a View, viene gestita dei ValueListenable. La view si mette
 in ascolto dei ValueListenable esposti dal ViewModel e quando ci sono nuovi valori, questi vengono
-assegnati al ValueListenable che automaticamentr triggera l'aggiornamento della View.
+assegnati al ValueListenable che automaticamente triggera l'aggiornamento della View.
 
 ### ViewModel
 
-Il ViewModel fa fa tramite tra la View e il Model.
+Il ViewModel fa tramite tra la View e il Model.
 
 Si occupa di:
 
@@ -56,10 +56,10 @@ Ogni servizio per ottenere i dati è composto da:
 - un'implementazione, che implementa i metodi definiti dall'interfaccia
 
 Le risposte del Model, seguono tutti lo stesso formato.
-Qualsiasi metodo che il Model espone restituisce un ResultModel, questa è una interfaccia che ha due
+Qualsiasi metodo che il Model espone restituisce un ResultModel. Questa interfaccia ha due
 costruttori, uno per i casi di successo e l'altro per i casi di errore.
 
-La struttura del ResulModel è la seguente:
+La struttura del **ResulModel** è la seguente:
 
 ```
 abstract class ResultModel<SUCCESS, ERROR> {
@@ -74,12 +74,12 @@ abstract class ResultModel<SUCCESS, ERROR> {
 ```
 
 Tramite questa interfaccia è possibile aggiungere un nuovo livello di astrazione che permette al
-ViewModel di essere indipendente da come il Model viene implementato. Ad esempio, utilizzando questa
+ViewModel di essere indipendente dall'implementazione del Model. Ad esempio, utilizzando questa
 classe, non sarà più necessario far arrivare al ViewModel i codici di errore delle chiamate di rete.
 
 ## Testing
 
-Per ogni modulo, e per l'intero progetto sono presenti dei test automatici.
+Per ogni modulo e per l'intero progetto sono presenti dei test automatici.
 
 In particolare:
 
@@ -89,7 +89,7 @@ In particolare:
       stata fatta tramite la libreria [golden_toolkit](https://pub.dev/packages/golden_toolkit) che
       controlla se il widget rispetta le immagini
       definite all'interno della cartella "goldens"
-    - Vedere se la UI implementata sintatticamenre le specifiche. Ad esempio, se dopo la richiesta
+    - Vedere se la UI implementata sintatticamente le specifiche. Ad esempio, se dopo la richiesta
       di una lista di film, la schermata mostra la lista di film. In questo caso non importa come è
       disegnato il widget, ma conta solo l'esistenza del widget
 - Per il progetto è stato implementato un WidgetTest per testare il corretto funzionamento del
@@ -98,11 +98,11 @@ In particolare:
 ## Dependency Injection
 
 Questo progetto usa la Dipendency Injection, tramite il
-plugin [get_it](https://pub.dev/packages/get_it)
+plugin [get_it](https://pub.dev/packages/get_it).
 
 La Dependency Injection è una tecnica che consiste nel passare ad ogni instanza tutte le dipendenze
-di cui ha bisogno, togliendo di fatti la necessità di delegare la classe a conoscere le
-classi che implementano le interfacce necessarie alla classe.
+di cui ha bisogno, togliendo di fatto la necessità di delegare la classe a conoscere le
+classi che implementano le interfacce necessarie.
 
 In questo modo è possibile rendere del tutto indipendente la classe e delegare chi la istanzia a
 passare le dipendenze richieste.
