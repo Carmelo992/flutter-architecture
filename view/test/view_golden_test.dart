@@ -24,13 +24,8 @@ void main() {
 
     testGoldens('Poster widget', (tester) async {
       await loadAppFonts();
-      var widget = MaterialApp(
-        theme: ThemeData(colorScheme: const ColorScheme.dark(), useMaterial3: true),
-        home: Center(
-          child: PosterWidget(film: film, vm: vm),
-        ),
-      );
-      final builder = DeviceBuilder()
+      var widget = getMaterialApp(Center(child: PosterWidget(film: film, vm: vm)));
+      final builder = deviceBuilder
         ..overrideDevicesForAllScenarios(devices: devices)
         ..addScenario(name: 'Poster', widget: widget);
       await tester.pumpWidgetBuilder(builder.build(), surfaceSize: surfaceSize);
@@ -39,13 +34,10 @@ void main() {
 
     testGoldens('Sized Poster widget', (tester) async {
       await loadAppFonts();
-      var widget = MaterialApp(
-        theme: ThemeData(colorScheme: const ColorScheme.dark(), useMaterial3: true),
-        home: Center(
-          child: AspectRatio(aspectRatio: 9 / 16, child: PosterWidget(film: film, vm: vm, height: 180)),
-        ),
+      var widget = getMaterialApp(
+        AspectRatio(aspectRatio: 9 / 16, child: PosterWidget(film: film, vm: vm, height: 180)),
       );
-      final builder = DeviceBuilder()
+      final builder = deviceBuilder
         ..overrideDevicesForAllScenarios(devices: devices)
         ..addScenario(name: 'Sized Poster', widget: widget);
       await tester.pumpWidgetBuilder(builder.build(), surfaceSize: surfaceSize);
@@ -54,13 +46,8 @@ void main() {
 
     testGoldens('Backdrop widget', (tester) async {
       await loadAppFonts();
-      var widget = MaterialApp(
-        theme: ThemeData(colorScheme: const ColorScheme.dark(), useMaterial3: true),
-        home: Center(
-          child: BackdropWidget(film: film, vm: vm),
-        ),
-      );
-      final builder = DeviceBuilder()
+      var widget = getMaterialApp(Center(child: BackdropWidget(film: film, vm: vm)));
+      final builder = deviceBuilder
         ..overrideDevicesForAllScenarios(devices: devices)
         ..addScenario(name: 'Backdrop', widget: widget);
       await tester.pumpWidgetBuilder(builder.build(), surfaceSize: surfaceSize);
@@ -69,13 +56,8 @@ void main() {
 
     testGoldens('FilmCard widget', (tester) async {
       await loadAppFonts();
-      var widget = MaterialApp(
-        theme: ThemeData(colorScheme: const ColorScheme.dark(), useMaterial3: true),
-        home: Center(
-          child: FilmCard(film: film, vm: vm, openDetail: null),
-        ),
-      );
-      final builder = DeviceBuilder()
+      var widget = getMaterialApp(Center(child: FilmCard(film: film, vm: vm, openDetail: null)));
+      final builder = deviceBuilder
         ..overrideDevicesForAllScenarios(devices: devices)
         ..addScenario(name: 'FilmCard', widget: widget);
       await tester.pumpWidgetBuilder(builder.build(), surfaceSize: surfaceSize);
@@ -84,9 +66,8 @@ void main() {
 
     testGoldens('Details film header widget', (tester) async {
       await loadAppFonts();
-      var widget = MaterialApp(
-        theme: ThemeData(colorScheme: const ColorScheme.dark(), useMaterial3: true),
-        home: Scaffold(
+      var widget = getMaterialApp(
+        Scaffold(
           body: Column(
             children: [
               DetailsHeader(film: film, vm: vm),
@@ -94,7 +75,7 @@ void main() {
           ),
         ),
       );
-      final builder = DeviceBuilder()
+      final builder = deviceBuilder
         ..overrideDevicesForAllScenarios(devices: devices)
         ..addScenario(name: 'Details header', widget: widget);
       await tester.pumpWidgetBuilder(builder.build(), surfaceSize: surfaceSize);
@@ -106,37 +87,43 @@ void main() {
     FilmViewModel vm = MockedFilmViewModel();
     testGoldens("Films page", (tester) async {
       await loadAppFonts();
-      var widget = MaterialApp(
-        supportedLocales: AppLocalization.supportedLocales,
-        localizationsDelegates: AppLocalization.localizationsDelegates,
-        theme: ThemeData(colorScheme: const ColorScheme.dark(), useMaterial3: true),
-        home: FilmPage(vm: vm, openDetail: null),
-      );
-      final builder = DeviceBuilder()
+      var widget = getMaterialApp(FilmPage(vm: vm, openDetail: null));
+      final builder = deviceBuilder
         ..overrideDevicesForAllScenarios(devices: devices)
         ..addScenario(name: 'Film page', widget: widget);
       await tester.pumpWidgetBuilder(builder.build(), surfaceSize: surfaceSize);
       await screenMatchesGolden(tester, 'film_page_types_grid');
     });
-  });
 
-  testGoldens("Film details page", (tester) async {
-    await loadAppFonts();
-    var film = MockedFilmUiModel();
-    var vm = MockedFilmDetailsViewModel();
-    var widget = MaterialApp(
-      supportedLocales: AppLocalization.supportedLocales,
-      localizationsDelegates: AppLocalization.localizationsDelegates,
-      theme: ThemeData(colorScheme: const ColorScheme.dark(), useMaterial3: true),
-      home: DetailsPage(vm, filmId: film.id, openDetail: null),
-    );
-    final builder = DeviceBuilder()
-      ..overrideDevicesForAllScenarios(devices: devices)
-      ..addScenario(name: 'Film details page', widget: widget);
-    await tester.pumpWidgetBuilder(builder.build(), surfaceSize: surfaceSize);
-    await screenMatchesGolden(tester, 'film_details_page_types_grid');
+    testGoldens("Film details page", (tester) async {
+      await loadAppFonts();
+      var film = MockedFilmUiModel();
+      var vm = MockedFilmDetailsViewModel();
+      var widget = getMaterialApp(DetailsPage(vm, filmId: film.id, openDetail: null));
+      final builder = deviceBuilder
+        ..overrideDevicesForAllScenarios(devices: devices)
+        ..addScenario(name: 'Film details page', widget: widget);
+      await tester.pumpWidgetBuilder(builder.build(), surfaceSize: surfaceSize);
+      await screenMatchesGolden(tester, 'film_details_page_types_grid');
+    });
   });
 }
+
+MaterialApp getMaterialApp(Widget widget) {
+  return MaterialApp(
+    supportedLocales: AppLocalization.supportedLocales,
+    localizationsDelegates: AppLocalization.localizationsDelegates,
+    theme: ThemeData(colorScheme: const ColorScheme.dark(), useMaterial3: true),
+    debugShowCheckedModeBanner: false,
+    home: widget,
+  );
+}
+
+DeviceBuilder get deviceBuilder => DeviceBuilder(
+      bgColor: Color.fromARGB(255, 30, 31, 33),
+      nameTextColor: Color.fromARGB(255, 245, 194, 71),
+      lineColor: Colors.white,
+    );
 
 List<Device> getDevices() {
   List<double> scales = [1, 2, 3];
