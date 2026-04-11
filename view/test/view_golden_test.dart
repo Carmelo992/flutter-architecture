@@ -120,8 +120,8 @@ MaterialApp getMaterialApp(Widget widget) {
 }
 
 DeviceBuilder get deviceBuilder => DeviceBuilder(
-      bgColor: Color.fromARGB(255, 30, 31, 33),
-      nameTextColor: Color.fromARGB(255, 245, 194, 71),
+      bgColor: const Color.fromARGB(255, 30, 31, 33),
+      nameTextColor: const Color.fromARGB(255, 245, 194, 71),
       lineColor: Colors.white,
     );
 

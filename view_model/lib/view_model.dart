@@ -1,5 +1,3 @@
-library view_model;
-
 export 'ui_model/film_ui_model.dart';
 export 'ui_model/genre_ui_model.dart';
 export 'view_models/base_film_view_model.dart';

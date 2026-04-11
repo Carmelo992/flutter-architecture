@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:model/model.dart';
 import 'package:view_model/view_model.dart';
@@ -45,7 +47,7 @@ void main() {
 
     test('check ViewModel loaded', () async {
       await Future.delayed(const Duration(seconds: 3));
-      print(filmViewModel.films.value);
+      log(filmViewModel.films.value.toString());
       expect(filmViewModel.films.value, isNotEmpty);
       expect(filmViewModel.genres.value, isNotEmpty);
     });

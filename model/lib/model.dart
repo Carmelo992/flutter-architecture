@@ -1,5 +1,3 @@
-library services;
-
 export 'data_model/configuration_model.dart';
 export 'data_model/film_model.dart';
 export 'data_model/genre_model.dart';

@@ -70,7 +70,7 @@ class ArchitectureRouter {
 }
 
 @TypedGoRoute<SplashScreenData>(path: '/')
-class SplashScreenData extends GoRouteData {
+class SplashScreenData extends GoRouteData with $SplashScreenData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return SplashPage(goHome: (context) => HomeScreenData().go(context));
@@ -80,7 +80,7 @@ class SplashScreenData extends GoRouteData {
 @TypedGoRoute<HomeScreenData>(path: '/home', routes: [
   TypedGoRoute<DetailsScreenData>(path: 'details/:id'),
 ])
-class HomeScreenData extends GoRouteData {
+class HomeScreenData extends GoRouteData with $HomeScreenData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return FilmPage(
@@ -90,7 +90,7 @@ class HomeScreenData extends GoRouteData {
   }
 }
 
-class DetailsScreenData extends GoRouteData {
+class DetailsScreenData extends GoRouteData with $DetailsScreenData {
   final int id;
   final int counter;
 

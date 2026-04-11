@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: AppLocalization.supportedLocales,
       localizationsDelegates: AppLocalization.localizationsDelegates,
       onGenerateTitle: (context) => AppLocalization.of(context).name,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(colorScheme: const ColorScheme.dark(), useMaterial3: true),
     );
   }
