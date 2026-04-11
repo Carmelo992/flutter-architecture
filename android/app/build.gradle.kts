@@ -11,10 +11,10 @@ android {
     signingConfigs {
         create("release") {
             storeFile =
-                file("./keystore.jks")
-            storePassword = "FlutterArchitectureKeystore"
-            keyAlias = "FlutterArchitectureKeystore"
-            keyPassword = "FlutterArchitectureKeystore"
+                file("./new_keystore.jks")
+            storePassword = "architecture_keystore"
+            keyAlias = "architecture_keystore"
+            keyPassword = "architecture_keystore"
         }
     }
     namespace = "com.talk.flutter_architecture"
